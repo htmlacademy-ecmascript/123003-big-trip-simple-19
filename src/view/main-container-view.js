@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function mainContainerTemplate() {
+function createTemplate() {
   return '<section class="trip-events"></section>';
 }
 
 export default class MainContainerView {
   getTemplate() {
-    return mainContainerTemplate();
+    return createTemplate();
   }
 
   getElement() {

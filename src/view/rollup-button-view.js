@@ -1,12 +1,14 @@
 import { createElement } from '../render.js';
 
-function createPointDetailsTemplate() {
-  return '<section class="event__details"></section>';
+function createTemplate() {
+  return `<button class="event__rollup-btn" type="button">
+                    <span class="visually-hidden">Open event</span>
+                  </button>`;
 }
 
-export default class PointDetailsView {
+export default class RollupButtonView {
   getTemplate() {
-    return createPointDetailsTemplate();
+    return createTemplate();
   }
 
   getElement() {

@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function createPointFormTemplate() {
+function createTemplate() {
   return '<form class="event event--edit" action="#" method="post"></form>';
 }
 
 export default class PointFormView {
   getTemplate() {
-    return createPointFormTemplate();
+    return createTemplate();
   }
 
   getElement() {

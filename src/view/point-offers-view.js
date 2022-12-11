@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-function createPointOffersTemplate() {
+function createTemplate() {
   return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
@@ -55,7 +55,7 @@ function createPointOffersTemplate() {
 
 export default class PointOffersView {
   getTemplate() {
-    return createPointOffersTemplate();
+    return createTemplate();
   }
 
   getElement() {

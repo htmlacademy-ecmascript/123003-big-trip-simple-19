@@ -1,10 +1,12 @@
-import FilterPresenter from './presenter/filter-presenter.js';
+import HeaderPresenter from './presenter/header-presenter.js';
 import PointsPresenter from './presenter/points-presenter.js';
 
-const pointsContainer = document.querySelector('.trip-events');
-const filterContainer = document.querySelector('.trip-controls__filters');
-const filterPresenter = new FilterPresenter({filterContainer: filterContainer});
-const pointsPresenter = new PointsPresenter({pointsContainer: pointsContainer});
+const container = document.querySelector('.trip-events');
+const headerContainer = document.querySelector('.trip-main');
+const headerPresenter = new HeaderPresenter({headerContainer: headerContainer});
 
-filterPresenter.init();
+//не понятна запись {container: container}
+const pointsPresenter = new PointsPresenter({container: container});
+
+headerPresenter.init();
 pointsPresenter.init();

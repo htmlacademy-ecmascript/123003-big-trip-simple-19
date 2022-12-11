@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function filterContainerTemplate() {
-  return '<div class="trip-controls__filters"></div>';
+function createTemplate() {
+  return '<p class="trip-events__msg">Click New Event to create your first point</p>';
 }
 
-export default class FilterContainerView {
+export default class ServiceMessageView {
   getTemplate() {
-    return filterContainerTemplate();
+    return createTemplate();
   }
 
   getElement() {

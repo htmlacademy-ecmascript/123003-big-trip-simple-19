@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function createNoPointsDescriptionTemplate() {
-  return '<p class="trip-events__msg">Click New Event to create your first point</p>';
+function createTemplate() {
+  return '<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>';
 }
 
-export default class NoPointsDescriptionView {
+export default class NewEventButtonView {
   getTemplate() {
-    return createNoPointsDescriptionTemplate();
+    return createTemplate();
   }
 
   getElement() {

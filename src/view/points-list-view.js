@@ -1,12 +1,12 @@
 import { createElement } from '../render.js';
 
-function createPointsListTemplate() {
+function createTemplate() {
   return '<ul class="trip-events__list"></ul>';
 }
 
 export default class PointsListView {
   getTemplate() {
-    return createPointsListTemplate();
+    return createTemplate();
   }
 
   getElement() {
