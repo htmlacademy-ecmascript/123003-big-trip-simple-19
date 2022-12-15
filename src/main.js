@@ -1,12 +1,16 @@
 import HeaderPresenter from './presenter/header-presenter.js';
 import PointsPresenter from './presenter/points-presenter.js';
+import PointsModel from './model/points-model.js';
 
 const container = document.querySelector('.trip-events');
 const headerContainer = document.querySelector('.trip-main');
-const headerPresenter = new HeaderPresenter({headerContainer: headerContainer});
+const headerPresenter = new HeaderPresenter({container: headerContainer});
 
-//не понятна запись {container: container}
-const pointsPresenter = new PointsPresenter({container: container});
+const pointsModel = new PointsModel();
+const pointsPresenter = new PointsPresenter({
+  container: container,
+  pointsModel,
+});
 
 headerPresenter.init();
 pointsPresenter.init();

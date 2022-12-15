@@ -4,7 +4,7 @@
   "private": true,
   "description": "Проект «Большое путешествие (простой)» от HTML Academy",
   "browserslist": [
-    "last 2 versions", 
+    "last 2 versions",
     "not dead",
     "not ie <= 11",
     "not op_mini all",
