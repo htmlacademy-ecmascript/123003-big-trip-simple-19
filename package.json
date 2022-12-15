@@ -3,8 +3,8 @@
   "version": "19.0.0",
   "private": true,
   "description": "Проект «Большое путешествие (простой)» от HTML Academy",
-  "browserlist": [
-    "last 2 versions", 
+  "browserslist": [
+    "last 2 versions",
     "not dead",
     "not ie <= 11",
     "not op_mini all",
