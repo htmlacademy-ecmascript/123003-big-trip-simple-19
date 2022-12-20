@@ -8,19 +8,16 @@ const DateFormat = {
 
 const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
-function turnDateToNumbers(date) {
+function formatDateLong(date) {
   return date ? dayjs(date).format(DateFormat.TEXTED_DATE) : '';
 }
 
-function turnDateToText(date) {
+function formatDateShort(date) {
   return date ? dayjs(date).format(DateFormat.NUMERIC_DATE) : '';
 }
 
-function turnTimeToNumbers(date) {
+function formatTime(date) {
   return date ? dayjs(date).format(DateFormat.TIME) : '';
 }
 
-const isUndefined = (element, defaultMessage) => element === undefined ? defaultMessage : element;
-
-
-export { getRandomArrayElement, turnDateToNumbers, turnDateToText, turnTimeToNumbers, isUndefined };
+export { getRandomArrayElement, formatDateShort, formatDateLong, formatTime };

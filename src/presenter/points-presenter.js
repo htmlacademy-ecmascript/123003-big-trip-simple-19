@@ -7,7 +7,7 @@ import { render } from '../render.js';
 export default class PointsPresenter {
   pointsListView = new PointsListView();
 
-  constructor ({container, pointsModel}) {
+  constructor ({ container, pointsModel }) {
     this.container = container;
     this.pointsModel = pointsModel;
   }
@@ -22,10 +22,18 @@ export default class PointsPresenter {
 
     for (let i = 0; i < this.points.length; i++) {
       if(i === 0){
-        const pointFormView = new PointFormView({point: this.points[i], destination: this.destinations[i], offer: this.offers[i]});
+        const pointFormView = new PointFormView({
+          point: this.points[i],
+          destinations: this.destinations,
+          offers: this.offers,
+        });
         render (pointFormView, this.pointsListView.getElement());
       }
-      const pointView = new PointView({point: this.points[i], destination: this.destinations[i], offer: this.offers[i]});
+      const pointView = new PointView({
+        point: this.points[i],
+        destinations: this.destinations,
+        offers: this.offers,
+      });
 
       render(pointView, this.pointsListView.getElement());
     }

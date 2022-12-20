@@ -5,7 +5,7 @@ const RenderPosition = {
   AFTEREND: 'afterend',
 };
 
-function createElement(template) {
+function createElement(template) { //зачем создавать контейнер, класть туда template, и в итоге его же и отдавать
   const container = document.createElement('div');
   container.innerHTML = template;
 

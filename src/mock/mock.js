@@ -4,8 +4,8 @@ const points = [
   {
     'id': '0',
     'type': 'flight',
-    'dateFrom': '2022-12-11T10:25:58.321Z',
-    'dateTo': '2022-12-12T04:20:09.723Z',
+    'date_from': '2022-12-11T10:25:58.321Z',
+    'date_to': '2022-12-12T04:20:09.723Z',
     'destination': 27,
     'basePrice': 800,
     'offers': [
@@ -18,8 +18,8 @@ const points = [
   {
     'id': '1',
     'type': 'taxi',
-    'dateFrom': '2022-12-12T04:20:09.723Z',
-    'dateTo': '2022-12-12T09:31:52.785Z',
+    'date_from': '2022-12-12T04:20:09.723Z',
+    'date_to': '2022-12-12T09:31:52.785Z',
     'destination': 18,
     'basePrice': 700,
     'offers': [
@@ -31,8 +31,8 @@ const points = [
   {
     'id': '2',
     'type': 'flight',
-    'dateFrom': '2022-12-12T09:31:52.785Z',
-    'dateTo': '2022-12-13T06:16:55.905Z',
+    'date_from': '2022-12-12T09:31:52.785Z',
+    'date_to': '2022-12-13T06:16:55.905Z',
     'destination': 11,
     'basePrice': 800,
     'offers': [
@@ -45,8 +45,8 @@ const points = [
   {
     'id': '3',
     'type': 'train',
-    'dateFrom': '2022-12-13T06:16:55.905Z',
-    'dateTo': '2022-12-14T06:05:39.271Z',
+    'date_from': '2022-12-13T06:16:55.905Z',
+    'date_to': '2022-12-14T06:05:39.271Z',
     'destination': 1,
     'basePrice': 900,
     'offers': [
@@ -58,8 +58,8 @@ const points = [
   {
     'id': '4',
     'type': 'ship',
-    'dateFrom': '2022-12-14T06:05:39.271Z',
-    'dateTo': '2022-12-14T09:28:27.959Z',
+    'date_from': '2022-12-14T06:05:39.271Z',
+    'date_to': '2022-12-14T09:28:27.959Z',
     'destination': 19,
     'basePrice': 400,
     'offers': [
@@ -69,8 +69,8 @@ const points = [
   {
     'id': '5',
     'type': 'flight',
-    'dateFrom': '2022-12-14T09:28:27.959Z',
-    'dateTo': '2022-12-15T01:57:33.422Z',
+    'date_from': '2022-12-14T09:28:27.959Z',
+    'date_to': '2022-12-15T01:57:33.422Z',
     'destination': 17,
     'basePrice': 300,
     'offers': [
@@ -81,8 +81,8 @@ const points = [
   {
     'id': '6',
     'type': 'drive',
-    'dateFrom': '2022-12-15T01:57:33.422Z',
-    'dateTo': '2022-12-15T04:17:16.434Z',
+    'date_from': '2022-12-15T01:57:33.422Z',
+    'date_to': '2022-12-15T04:17:16.434Z',
     'destination': 18,
     'basePrice': 900,
     'offers': [
@@ -93,8 +93,8 @@ const points = [
   {
     'id': '7',
     'type': 'bus',
-    'dateFrom': '2022-12-15T04:17:16.434Z',
-    'dateTo': '2022-12-16T00:50:57.540Z',
+    'date_from': '2022-12-15T04:17:16.434Z',
+    'date_to': '2022-12-16T00:50:57.540Z',
     'destination': 22,
     'basePrice': 500,
     'offers': [
@@ -106,8 +106,8 @@ const points = [
   {
     'id': '8',
     'type': 'bus',
-    'dateFrom': '2022-12-16T00:50:57.540Z',
-    'dateTo': '2022-12-16T21:41:22.818Z',
+    'date_from': '2022-12-16T00:50:57.540Z',
+    'date_to': '2022-12-16T21:41:22.818Z',
     'destination': 15,
     'basePrice': 400,
     'offers': [
@@ -119,8 +119,8 @@ const points = [
   {
     'id': '9',
     'type': 'train',
-    'dateFrom': '2022-12-16T21:41:22.818Z',
-    'dateTo': '2022-12-17T15:16:06.329Z',
+    'date_from': '2022-12-16T21:41:22.818Z',
+    'date_to': '2022-12-17T15:16:06.329Z',
     'destination': 13,
     'basePrice': 400,
     'offers': [
@@ -132,8 +132,8 @@ const points = [
   {
     'id': '10',
     'type': 'restaurant',
-    'dateFrom': '2022-12-17T15:16:06.329Z',
-    'dateTo': '2022-12-18T02:51:08.781Z',
+    'date_from': '2022-12-17T15:16:06.329Z',
+    'date_to': '2022-12-18T02:51:08.781Z',
     'destination': 24,
     'basePrice': 500,
     'offers': [
@@ -144,8 +144,8 @@ const points = [
   {
     'id': '11',
     'type': 'restaurant',
-    'dateFrom': '2022-12-18T02:51:08.781Z',
-    'dateTo': '2022-12-18T23:23:47.821Z',
+    'date_from': '2022-12-18T02:51:08.781Z',
+    'date_to': '2022-12-18T23:23:47.821Z',
     'destination': 23,
     'basePrice': 300,
     'offers': [
@@ -156,8 +156,8 @@ const points = [
   {
     'id': '12',
     'type': 'restaurant',
-    'dateFrom': '2022-12-18T23:23:47.821Z',
-    'dateTo': '2022-12-19T13:36:46.621Z',
+    'date_from': '2022-12-18T23:23:47.821Z',
+    'date_to': '2022-12-19T13:36:46.621Z',
     'destination': 9,
     'basePrice': 900,
     'offers': [
@@ -168,8 +168,8 @@ const points = [
   {
     'id': '13',
     'type': 'bus',
-    'dateFrom': '2022-12-19T13:36:46.621Z',
-    'dateTo': '2022-12-20T02:11:03.835Z',
+    'date_from': '2022-12-19T13:36:46.621Z',
+    'date_to': '2022-12-20T02:11:03.835Z',
     'destination': 25,
     'basePrice': 300,
     'offers': [
@@ -181,8 +181,8 @@ const points = [
   {
     'id': '14',
     'type': 'train',
-    'dateFrom': '2022-12-20T02:11:03.835Z',
-    'dateTo': '2022-12-20T06:52:19.271Z',
+    'date_from': '2022-12-20T02:11:03.835Z',
+    'date_to': '2022-12-20T06:52:19.271Z',
     'destination': 1,
     'basePrice': 600,
     'offers': [
@@ -194,8 +194,8 @@ const points = [
   {
     'id': '15',
     'type': 'drive',
-    'dateFrom': '2022-12-20T06:52:19.271Z',
-    'dateTo': '2022-12-21T05:29:17.856Z',
+    'date_from': '2022-12-20T06:52:19.271Z',
+    'date_to': '2022-12-21T05:29:17.856Z',
     'destination': 26,
     'basePrice': 300,
     'offers': [
@@ -206,8 +206,8 @@ const points = [
   {
     'id': '16',
     'type': 'ship',
-    'dateFrom': '2022-12-21T05:29:17.856Z',
-    'dateTo': '2022-12-21T19:51:34.762Z',
+    'date_from': '2022-12-21T05:29:17.856Z',
+    'date_to': '2022-12-21T19:51:34.762Z',
     'destination': 7,
     'basePrice': 800,
     'offers': [
@@ -219,8 +219,8 @@ const points = [
   {
     'id': '17',
     'type': 'ship',
-    'dateFrom': '2022-12-21T19:51:34.762Z',
-    'dateTo': '2022-12-22T18:06:43.400Z',
+    'date_from': '2022-12-21T19:51:34.762Z',
+    'date_to': '2022-12-22T18:06:43.400Z',
     'destination': 17,
     'basePrice': 300,
     'offers': [
@@ -231,8 +231,8 @@ const points = [
   {
     'id': '18',
     'type': 'flight',
-    'dateFrom': '2022-12-22T18:06:43.400Z',
-    'dateTo': '2022-12-23T04:49:08.303Z',
+    'date_from': '2022-12-22T18:06:43.400Z',
+    'date_to': '2022-12-23T04:49:08.303Z',
     'destination': 26,
     'basePrice': 500,
     'offers': [
@@ -245,8 +245,8 @@ const points = [
   {
     'id': '19',
     'type': 'train',
-    'dateFrom': '2022-12-23T04:49:08.303Z',
-    'dateTo': '2022-12-23T18:37:51.004Z',
+    'date_from': '2022-12-23T04:49:08.303Z',
+    'date_to': '2022-12-23T18:37:51.004Z',
     'destination': 27,
     'basePrice': 1000,
     'offers': [
@@ -1319,12 +1319,19 @@ const offers = [
   }
 ];
 
-const getRandomPoint = () => getRandomArrayElement(points);
+const getRandomPoint = () => {
+  const point = getRandomArrayElement(points);
+  return {
+    dateFrom: new Date(point.date_from),
+    dateTo: new Date(point.date_to),
+    ...point,
+  };
+};
 
 
-const getRandomDestination = () => getRandomArrayElement(destinations);
+const getDestinations = () => destinations;
 
 
-const getRandomOffer = () => getRandomArrayElement(offers);
+const getOffers = () => offers;
 
-export { getRandomPoint, getRandomDestination, getRandomOffer };
+export { getRandomPoint, getDestinations, getOffers };

@@ -5,7 +5,7 @@ import { render } from '../render.js';
 export default class HeaderPresenter {
   headerContainer = document.querySelector('.trip-controls__filters');
 
-  constructor ({container}) {
+  constructor ({ container }) {
     this.container = container;
   }
 

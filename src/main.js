@@ -4,7 +4,7 @@ import PointsModel from './model/points-model.js';
 
 const container = document.querySelector('.trip-events');
 const headerContainer = document.querySelector('.trip-main');
-const headerPresenter = new HeaderPresenter({container: headerContainer});
+const headerPresenter = new HeaderPresenter({ container: headerContainer });
 
 const pointsModel = new PointsModel();
 const pointsPresenter = new PointsPresenter({

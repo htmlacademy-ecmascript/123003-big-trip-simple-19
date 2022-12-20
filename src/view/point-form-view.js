@@ -1,5 +1,4 @@
 import { createElement } from '../render.js';
-import { getRandomArrayElement, turnDateToNumbers, turnTimeToNumbers } from '../utils.js';
 
 function createRollupButtonTemplate() {
   return (
@@ -9,64 +8,94 @@ function createRollupButtonTemplate() {
   );
 }
 
-function createCancelButtonTemplate() {
-  return 'Cancel';
-}
-function createDeleteButtonTemplate() {
-  return 'Delete';
-}
-function createTypeListItem(point = {}) {
-  const { type } = point;
+function createTypeListItemTemplate(type) {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+      <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}">
+      <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
     </div>`
   );
 }
-function createDestinationPicture(destination = {}) {
-  const photo = getRandomArrayElement(destination.pictures).src;
-  return(
-    `<img class="event__photo" src="${photo}" alt="Event photo">`
-  ) ;
-}
 
-function createOfferItem(offer = {}) {
-  const { type } = offer;
-  const offerPrice = getRandomArrayElement(offer.offers).price;
+
+// function createofferOptionsTemplate ({ title, price, id }) {
+//   return (
+//     `<div class="event__offer-selector">
+//       <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${id}" type="checkbox" name="event-offer-luggage">
+//       <label class="event__offer-label" for="event-offer-luggage-${id}">
+//         <span class="event__offer-title">${title}</span>
+//         +€&nbsp;
+//         <span class="event__offer-price">${price}</span>
+//       </label>
+//     </div>`
+//   );
+// }
+
+function createDestinationPictureTemplate({ src, description }) {
   return (
-    `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-      <label class="event__offer-label" for="event-offer-train-1">
-      <span class="event__offer-title">Travel by ${type}</span>
-      +€&nbsp;
-      <span class="event__offer-price">${offerPrice}</span>
-      </label>
-    </div>`
-  ) ;
+    `<img class="event__photo" src="${src}" alt="${description}">`
+  );
 }
 
-function createTemplate(point, destination) {
+function createTemplate({ point, destinations = [], offers = [] }) {
+  const CancelButtonText = {
+    CANCEL: 'Cancel',
+    DELETE: 'Delete',
+  };
+
+  const TYPES = [
+    'Taxi',
+    'Bus',
+    'Train',
+    'Ship',
+    'Drive',
+    'Flight',
+    'Check-in',
+    'Sightseeing',
+    'Restaurant'
+  ];
+
   const {
-    id = '1',
-    type,
-    dateFrom,
-    dateTo
+    id: pointId,
+    type: pointType,
+    destination: pointDestinationId,
+    offers: chosenOffers,
   } = point;
-  const { name } = destination;
-  const pointDateFrom = turnDateToNumbers(dateFrom);
-  const pointDateTo = turnDateToNumbers(dateTo);
-  const timeFrom = turnTimeToNumbers(dateFrom);
-  const timeTo = turnTimeToNumbers(dateTo);
-  const isNew = id === undefined;
+
+  const isNew = pointId === undefined;
+
+  const { name: destinationName, description, pictures } = destinations.find(({ id }) => id === pointDestinationId);
+
+  const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
+
+  const typeListItems = TYPES.map(createTypeListItemTemplate).join('');
 
   const rollupButtonTemplate = isNew
     ? ''
     : createRollupButtonTemplate();
 
-  const cancelButtonTemplate = isNew
-    ? createCancelButtonTemplate()
-    : createDeleteButtonTemplate();
+  const cancelButtonText = isNew
+    ? CancelButtonText.CANCEL
+    : CancelButtonText.DELETE;
+
+  const destinationNamesTemplate = destinations.map(({ name }) => `<option value="${name}"></option>`).join('');
+
+  const destinationPicturesTemplate = pictures.map(createDestinationPictureTemplate).join('');
+
+  // const offerOptionsTemplate = offerOptions.map(createofferOptionsTemplate).join('');
+  const offerOptionsTemplate = offerOptions.map(({ id, title, price }) => {
+    const checked = chosenOffers.includes(id) ? 'checked' : '';
+    return (
+      `<div class="event__offer-selector">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${id}" type="checkbox" name="event-offer-luggage" ${checked}>
+        <label class="event__offer-label" for="event-offer-luggage-${id}">
+          <span class="event__offer-title">${title}</span>
+          +€&nbsp;
+          <span class="event__offer-price">${price}</span>
+        </label>
+      </div>`
+    );
+  }).join('');
 
   return (
     `<li class="trip-events__item">
@@ -75,44 +104,34 @@ function createTemplate(point, destination) {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${pointType}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
-                  ${createTypeListItem()}
+                  ${typeListItems}
               </fieldset>
             </div>
           </div>
 
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${type}
+              ${pointType}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
             <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
+              ${destinationNamesTemplate}
             </datalist>
           </div>
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${pointDateFrom} ${timeFrom}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="19/03/19 00:00">
             —
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${pointDateTo} ${timeTo}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="19/03/19 00:00">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -125,7 +144,7 @@ function createTemplate(point, destination) {
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">
-            ${cancelButtonTemplate}
+            ${cancelButtonText}
           </button>                  
           ${rollupButtonTemplate}
         </header>
@@ -133,23 +152,15 @@ function createTemplate(point, destination) {
           <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
-            ${createOfferItem()}
-            ${createOfferItem()}
-            ${createOfferItem()}
-            ${createOfferItem()}
-            ${createOfferItem()}
+            ${offerOptionsTemplate} 
           </div>
           </section>
           <section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-            <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+            <p class="event__destination-description">${description}</p>
             <div class="event__photos-container">
               <div class="event__photos-tape">
-                ${createDestinationPicture()}
-                ${createDestinationPicture()}
-                ${createDestinationPicture()}
-                ${createDestinationPicture()}
-                ${createDestinationPicture()}
+                 ${destinationPicturesTemplate}
               </div>
             </div>
           </section>
@@ -160,14 +171,22 @@ function createTemplate(point, destination) {
 }
 
 export default class PointFormView {
-  constructor(point, destination, offer) {
-    this.point = point;
-    this.destination = destination;
-    this.offer = offer;
+  #point = null;
+  #offers = [];
+  #destinations = [];
+
+  constructor({ point, destinations, offers }) {
+    this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
   }
 
   getTemplate() {
-    return createTemplate(this.point, this.destination, this.offer);
+    return createTemplate({
+      point: this.#point,
+      destinations: this.#destinations,
+      offers: this.#offers
+    });
   }
 
   getElement() {
@@ -182,3 +201,4 @@ export default class PointFormView {
     this.element = null;
   }
 }
+
