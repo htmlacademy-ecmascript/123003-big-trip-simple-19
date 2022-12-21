@@ -2,6 +2,15 @@ import { createElement } from '../render.js';
 import { capitalize } from '../utils.js';
 import { POINT_TYPES } from '../const.js';
 
+const BLANK_POINT = {
+  'type': POINT_TYPES[0],
+  'date_from': '2022-12-12T09:31:52.785Z',
+  'date_to': '2022-12-13T06:16:55.905Z',
+  'destination': null,
+  'basePrice': null,
+  'offers': null
+};
+
 const ResetButtonText = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',
@@ -157,7 +166,7 @@ export default class PointFormView {
   #offers = [];
   #destinations = [];
 
-  constructor({ point, destinations, offers }) {
+  constructor({ point = BLANK_POINT, destinations, offers }) {
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
