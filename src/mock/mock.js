@@ -1,4 +1,4 @@
-import { getRandomArrayElement } from '../utils.js';
+import { getRandomArrayItem } from '../utils.js';
 
 const points = [
   {
@@ -1320,7 +1320,7 @@ const offers = [
 ];
 
 const getRandomPoint = () => {
-  const point = getRandomArrayElement(points);
+  const point = getRandomArrayItem(points);
   return {
     dateFrom: new Date(point.date_from),
     dateTo: new Date(point.date_to),

@@ -1,5 +1,6 @@
 import { createElement } from '../render.js';
 import { formatDateShort, formatTime } from '../utils.js';
+import { NO_SELECTED_OFFERS } from '../const.js';
 
 function createofferOptionsTemplate ({ title, price }) {
   return (
@@ -24,8 +25,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
   const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
-
-  const offerOptionsTemplate = offerOptions.map(createofferOptionsTemplate).join('');
+  const offerOptionsTemplate = offerOptions === undefined ? NO_SELECTED_OFFERS : offerOptions.map(createofferOptionsTemplate).join('');
 
   return (
     `<li class="trip-events__item">
