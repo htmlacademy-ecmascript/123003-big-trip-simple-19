@@ -1,26 +1,24 @@
 import dayjs from 'dayjs';
 
 const DateFormat = {
-  TEXTED_DATE: 'D/MM/YY HH:mm',
-  NUMERIC_DATE: 'D MMM',
+  DATE: 'D MMM',
   TIME: 'HH:mm',
 };
 
-const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
-
-function turnDateToNumbers(date) {
-  return date ? dayjs(date).format(DateFormat.TEXTED_DATE) : '';
+function getRandomArrayItem(items) {
+  return items[Math.floor(Math.random() * items.length)];
 }
 
-function turnDateToText(date) {
-  return date ? dayjs(date).format(DateFormat.NUMERIC_DATE) : '';
+function formatDateShort(date) {
+  return date ? dayjs(date).format(DateFormat.DATE) : '';
 }
 
-function turnTimeToNumbers(date) {
+function formatTime(date) {
   return date ? dayjs(date).format(DateFormat.TIME) : '';
 }
 
-const isUndefined = (element, defaultMessage) => element === undefined ? defaultMessage : element;
+function capitalize(text) {
+  return text.charAt(0).toUpperCase().concat(text.slice(1));
+}
 
-
-export { getRandomArrayElement, turnDateToNumbers, turnDateToText, turnTimeToNumbers, isUndefined };
+export { getRandomArrayItem, formatDateShort, formatTime, capitalize };

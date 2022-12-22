@@ -7,29 +7,35 @@ import { render } from '../render.js';
 export default class PointsPresenter {
   pointsListView = new PointsListView();
 
-  constructor ({container, pointsModel}) {
+  constructor ({ container, pointsModel, destinationsModel, offersModel }) {
     this.container = container;
     this.pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
+    this.offersModel = offersModel;
   }
 
   init() {
     this.points = [...this.pointsModel.getPoints()];
-    this.destinations = [...this.pointsModel.getDestinations()];
-    this.offers = [...this.pointsModel.getOffers()];
+    this.destinations = [...this.destinationsModel.getDestinations()];
+    this.offers = [...this.offersModel.getOffers()];
 
-    render (new SortView(), this.container);
+    const pointFormView = new PointFormView({
+      point: this.points[0],
+      destinations: this.destinations,
+      offers: this.offers,
+    });
+    render (pointFormView, this.pointsListView.getElement());
 
-
-    for (let i = 0; i < this.points.length; i++) {
-      if(i === 0){
-        const pointFormView = new PointFormView({point: this.points[i], destination: this.destinations[i], offer: this.offers[i]});
-        render (pointFormView, this.pointsListView.getElement());
-      }
-      const pointView = new PointView({point: this.points[i], destination: this.destinations[i], offer: this.offers[i]});
-
+    for (const point of this.points) {
+      const pointView = new PointView({
+        point,
+        destinations: this.destinations,
+        offers: this.offers,
+      });
       render(pointView, this.pointsListView.getElement());
     }
 
+    render (new SortView(), this.container);
     render (this.pointsListView, this.container);
   }
 }
