@@ -5,26 +5,26 @@ function createTemplate(message) {
 }
 
 export default class TripMessageView {
-  element = null;
+  #element = null;
   #message = '';
 
   constructor(message) {
     this.#message = message;
   }
 
-  getTemplate() {
+  get template() {
     return createTemplate(this.#message);
   }
 
-  getElement() {
-    if (this.element === null) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (this.#element === null) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

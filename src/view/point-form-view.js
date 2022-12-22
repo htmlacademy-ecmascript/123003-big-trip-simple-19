@@ -171,6 +171,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 }
 
 export default class PointFormView {
+  #element = null;
   #point = null;
   #offers = [];
   #destinations = [];
@@ -181,7 +182,7 @@ export default class PointFormView {
     this.#offers = offers;
   }
 
-  getTemplate() {
+  get template() {
     return createTemplate({
       point: this.#point,
       destinations: this.#destinations,
@@ -189,12 +190,12 @@ export default class PointFormView {
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {

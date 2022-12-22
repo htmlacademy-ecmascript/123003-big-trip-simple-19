@@ -26,7 +26,9 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
   const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
-  const offerOptionsTemplate = offerOptions === undefined ? NO_SELECTED_OFFERS_TEXT : offerOptions.map(createofferOptionsTemplate).join('');
+  const offerOptionsTemplate = offerOptions === undefined
+    ? NO_SELECTED_OFFERS_TEXT
+    : offerOptions.map(createofferOptionsTemplate).join('');
 
   return (
     `<li class="trip-events__item">
@@ -59,6 +61,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 }
 
 export default class PointView {
+  #element = null;
   #point = null;
   #offers = [];
   #destinations = [];
@@ -69,7 +72,7 @@ export default class PointView {
     this.#offers = offers;
   }
 
-  getTemplate() {
+  get template() {
     return createTemplate({
       point: this.#point,
       destinations: this.#destinations,
@@ -77,15 +80,15 @@ export default class PointView {
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
