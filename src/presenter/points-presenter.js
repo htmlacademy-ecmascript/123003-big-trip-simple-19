@@ -28,7 +28,7 @@ export default class PointsPresenter {
 
     for (const point of this.points) {
       const pointView = new PointView({
-        point: point,
+        point,
         destinations: this.destinations,
         offers: this.offers,
       });

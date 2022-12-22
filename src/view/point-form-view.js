@@ -2,13 +2,14 @@ import { createElement } from '../render.js';
 import { capitalize } from '../utils.js';
 import { POINT_TYPES } from '../const.js';
 
+const DEFAULT_POINT_TYPE = POINT_TYPES[0];
 const BLANK_POINT = {
-  'type': POINT_TYPES[0],
-  'date_from': '2022-12-12T09:31:52.785Z',
-  'date_to': '2022-12-13T06:16:55.905Z',
-  'destination': null,
-  'basePrice': null,
-  'offers': null
+  'type': DEFAULT_POINT_TYPE,
+  'date_from': null,
+  'date_to': null,
+  'destination': 0,
+  'basePrice': 0,
+  'offers': []
 };
 
 const ResetButtonText = {
@@ -26,24 +27,24 @@ function createRollupButtonTemplate() {
 
 function createDestinationPictureTemplate({ src, description }) {
   return (
-    `<img class="event__photo" src="${src}" alt="${description}">`
+    `<img class="event__photo" src="${ src }" alt="${ description }">`
   );
 }
 
 function createTemplate({ point, destinations = [], offers = [] }) {
   const {
-    id: pointId,
+    id: pointId = '',
     type: pointType,
     destination: pointDestinationId,
     offers: chosenOffers,
     basePrice,
   } = point;
 
-  const isNew = pointId === undefined;
+  const isNew = pointId === '';
 
   const { name: destinationName, description, pictures } = destinations.find(({ id }) => id === pointDestinationId);
 
-  const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
+  const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType);
 
   const rollupButtonTemplate = isNew
     ? ''
@@ -53,53 +54,61 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     ? ResetButtonText.CANCEL
     : ResetButtonText.DELETE;
 
-  const destinationNamesTemplate = destinations.map(({ name }) => `<option value="${name}"></option>`).join('');
+  const destinationNamesTemplate = destinations.map(({ name }) => `<option value="${ name }"></option>`).join('');
 
   const destinationPicturesTemplate = pictures.map(createDestinationPictureTemplate).join('');
 
   const typeListItemsTemplate = POINT_TYPES.map((type) => {
-    const checked = (type === pointType) ? 'checked' : '';
+    const checked = (type === pointType)
+      ? 'checked'
+      : '';
+
     return (
       `<div class="event__type-item">
-      <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${checked}>
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${capitalize(type)}</label>
+      <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${ checked }>
+      <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ capitalize(type) }</label>
     </div>`
     );
   }).join('');
 
 
   const offerOptionsTemplate = offerOptions.map(({ id, title, price }) => {
-    const checked = chosenOffers.includes(id) ? 'checked' : '';
+    const checked = chosenOffers.includes(id)
+      ? 'checked'
+      : '';
+
     return (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${pointType}-${id}" type="checkbox" name="event-offer-${pointType}" ${checked}>
-        <label class="event__offer-label" for="event-offer-${pointType}-${id}">
-          <span class="event__offer-title">${title}</span>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ pointType }-${ id }" type="checkbox" name="event-offer-${ pointType }" ${ checked }>
+        <label class="event__offer-label" for="event-offer-${ pointType }-${ id }">
+          <span class="event__offer-title">${ title }</span>
           +€&nbsp;
-          <span class="event__offer-price">${price}</span>
+          <span class="event__offer-price">${ price }</span>
         </label>
       </div>`
     );
   }).join('');
 
-  const offersTemplate = offerOptions === undefined ? '' :
-    `<section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-      <div class="event__available-offers">
-        ${offerOptionsTemplate} 
-      </div>
-    </section>`;
-
-  const destinationTemplate = pointDestinationId === undefined ? '' :
-    `<section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${description}</p>
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
-          ${destinationPicturesTemplate}
+  const offersTemplate = offerOptions.length === 0
+    ? ''
+    : `<section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+        <div class="event__available-offers">
+          ${ offerOptionsTemplate } 
         </div>
-      </div>
-    </section>`;
+      </section>`;
+
+  const destinationTemplate = pointDestinationId === undefined
+    ? ''
+    : `<section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${ description }</p>
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${ destinationPicturesTemplate }
+          </div>
+        </div>
+      </section>`;
 
   return (
     `<li class="trip-events__item">
@@ -108,25 +117,25 @@ function createTemplate({ point, destinations = [], offers = [] }) {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${pointType}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${ pointType }.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-                  ${typeListItemsTemplate}
+                  ${ typeListItemsTemplate }
               </fieldset>
             </div>
           </div>
 
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
-              ${pointType}
+              ${ pointType }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinationName}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName }" list="destination-list-1">
             <datalist id="destination-list-1">
-              ${destinationNamesTemplate}
+              ${ destinationNamesTemplate }
             </datalist>
           </div>
 
@@ -143,18 +152,18 @@ function createTemplate({ point, destinations = [], offers = [] }) {
             <span class="visually-hidden">Price</span>
             €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${ basePrice }">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">
-            ${resetButtonText}
+            ${ resetButtonText }
           </button>                  
-          ${rollupButtonTemplate}
+          ${ rollupButtonTemplate }
         </header>
         <section class="event__details">
-          ${offersTemplate}
-          ${destinationTemplate}
+          ${ offersTemplate }
+          ${ destinationTemplate }
         </section>
       </form>
     </li>`

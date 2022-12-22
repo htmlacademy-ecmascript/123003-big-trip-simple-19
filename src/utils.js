@@ -17,6 +17,8 @@ function formatTime(date) {
   return date ? dayjs(date).format(DateFormat.TIME) : '';
 }
 
-const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+function capitalize(text) {
+  return text.charAt(0).toUpperCase().concat(text.slice(1));
+}
 
 export { getRandomArrayItem, formatDateShort, formatTime, capitalize };

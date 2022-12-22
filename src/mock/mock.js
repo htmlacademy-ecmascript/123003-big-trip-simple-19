@@ -1328,9 +1328,7 @@ const getRandomPoint = () => {
   };
 };
 
-
 const getDestinations = () => destinations;
-
 
 const getOffers = () => offers;
 
