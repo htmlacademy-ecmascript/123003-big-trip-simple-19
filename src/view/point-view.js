@@ -29,6 +29,10 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   const offerOptionsTemplate = offerOptions === undefined
     ? NO_SELECTED_OFFERS_TEXT
     : offerOptions.map(createofferOptionsTemplate).join('');
+  const rollupButtonTemplate =
+   `<button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>`;
 
   return (
     `<li class="trip-events__item">
@@ -52,9 +56,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         <ul class="event__selected-offers">
           ${ offerOptionsTemplate }
         </ul>
-        <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
+         ${ rollupButtonTemplate }
       </div>
     </li>`
   );

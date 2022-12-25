@@ -3,13 +3,14 @@ import { capitalize } from '../utils.js';
 import { POINT_TYPES } from '../const.js';
 
 const DEFAULT_POINT_TYPE = POINT_TYPES[0];
+
 const BLANK_POINT = {
-  'type': DEFAULT_POINT_TYPE,
-  'date_from': null,
-  'date_to': null,
-  'destination': 0,
-  'basePrice': 0,
-  'offers': []
+  type: DEFAULT_POINT_TYPE,
+  dateFrom: null,
+  dateTo: null,
+  destination: 0,
+  basePrice: 0,
+  offers: [],
 };
 
 const ResetButtonText = {
@@ -65,9 +66,9 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 
     return (
       `<div class="event__type-item">
-      <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${ checked }>
-      <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ capitalize(type) }</label>
-    </div>`
+        <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${ checked }>
+        <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ capitalize(type) }</label>
+      </div>`
     );
   }).join('');
 
