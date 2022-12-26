@@ -43,7 +43,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 
   const isNew = pointId === '';
 
-  const { name: destinationName, description, pictures } = destinations.find(({ id }) => id === pointDestinationId);
+  const { name: destinationName = '', description = '', pictures = [] } = destinations.find(({ id }) => id === pointDestinationId);
 
   const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType);
 
@@ -99,11 +99,11 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         </div>
       </section>`;
 
-  const destinationTemplate = pointDestinationId === undefined
+  const destinationTemplate = pointDestinationId === undefined || pointDestinationId === null
     ? ''
     : `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${ description }</p>
+        <p class="event__destination-description">${ description ?? '' }</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
             ${ destinationPicturesTemplate }
@@ -134,7 +134,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ pointType }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName }" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName ?? '' }" list="destination-list-1">
             <datalist id="destination-list-1">
               ${ destinationNamesTemplate }
             </datalist>

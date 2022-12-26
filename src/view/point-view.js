@@ -21,12 +21,13 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     dateTo,
     destination: pointDestinationId,
   } = point;
-  const { name: destinationName } = destinations.find(({ id }) => id === pointDestinationId);
+
+  const { name = '' } = destinations.find(({ id }) => id === pointDestinationId);
   const pointDate = formatDateShort(dateFrom);
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
   const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
-  const offerOptionsTemplate = offerOptions === undefined
+  const offerOptionsTemplate = offerOptions.length === 0
     ? NO_SELECTED_OFFERS_TEXT
     : offerOptions.map(createofferOptionsTemplate).join('');
   const rollupButtonTemplate =
@@ -41,7 +42,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${ pointType }.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${ pointType } ${ destinationName } </h3>
+        <h3 class="event__title">${ pointType } ${ name } </h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="${ dateFrom.toISOString() }">${ timeFrom }</time>

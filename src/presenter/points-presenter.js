@@ -38,7 +38,7 @@ export default class PointsPresenter {
       offers: this.#offers,
     });
     const pointFormView = new PointFormView({
-      point,
+      //point,
       destinations: this.#destinations,
       offers: this.#offers,
     });
