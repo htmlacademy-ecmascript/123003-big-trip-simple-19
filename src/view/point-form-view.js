@@ -3,7 +3,6 @@ import { capitalize } from '../utils.js';
 import { POINT_TYPES } from '../const.js';
 
 const DEFAULT_POINT_TYPE = POINT_TYPES[0];
-
 const BLANK_POINT = {
   type: DEFAULT_POINT_TYPE,
   dateFrom: null,
@@ -12,7 +11,15 @@ const BLANK_POINT = {
   basePrice: 0,
   offers: [],
 };
-
+const BLANK_DESTINATION = {
+  name: '',
+  description: '',
+  pictures: [],
+};
+const BLANK_OFFER = {
+  type: '',
+  offers: [],
+};
 const ResetButtonText = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',
@@ -43,9 +50,13 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 
   const isNew = pointId === '';
 
-  const { name: destinationName = '', description = '', pictures = [] } = destinations.find(({ id }) => id === pointDestinationId);
+  const {
+    name: destinationName = '',
+    description = '',
+    pictures = []
+  } = destinations.find(({ id }) => id === pointDestinationId) ?? BLANK_DESTINATION;
 
-  const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType);
+  const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType) ?? BLANK_OFFER;
 
   const rollupButtonTemplate = isNew
     ? ''
@@ -99,9 +110,8 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         </div>
       </section>`;
 
-  const destinationTemplate = pointDestinationId === undefined || pointDestinationId === null
-    ? ''
-    : `<section class="event__section  event__section--destination">
+  const destinationTemplate = pointDestinationId > 0
+    ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${ description ?? '' }</p>
         <div class="event__photos-container">
@@ -109,7 +119,8 @@ function createTemplate({ point, destinations = [], offers = [] }) {
             ${ destinationPicturesTemplate }
           </div>
         </div>
-      </section>`;
+      </section>`
+    : '';
 
   return (
     `<li class="trip-events__item">

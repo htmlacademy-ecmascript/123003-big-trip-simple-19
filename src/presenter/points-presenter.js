@@ -38,7 +38,7 @@ export default class PointsPresenter {
       offers: this.#offers,
     });
     const pointFormView = new PointFormView({
-      //point,
+      point,
       destinations: this.#destinations,
       offers: this.#offers,
     });
@@ -58,14 +58,18 @@ export default class PointsPresenter {
       }
     };
 
-    pointView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replacePointToForm();
-      document.addEventListener('keydown', escKeyDownHandler);
-    });
+    if (pointView.element.querySelector('.event__rollup-btn') !== null) {
+      pointView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+        replacePointToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      });
+    }
 
-    pointFormView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceFormToPoint();
-    });
+    if(pointFormView.element.querySelector('.event__rollup-btn') !== null) {
+      pointFormView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+        replaceFormToPoint();
+      });
+    }
 
     pointFormView.element.querySelector('form').addEventListener('submit', (evt) => {
       evt.preventDefault();
