@@ -3,6 +3,7 @@ import PointsListView from '../view/points-list-view.js';
 import PointView from '../view/point-view.js';
 import PointFormView from '../view/point-form-view.js';
 import TripMessageView from '../view/trip-message-view.js';
+import NewEventButtonView from '../view/new-event-button-view.js';
 import { TripMessageText } from '../const.js';
 import { render } from '../render.js';
 
@@ -65,7 +66,7 @@ export default class PointsPresenter {
       });
     }
 
-    if(pointFormView.element.querySelector('.event__rollup-btn') !== null) {
+    if (pointFormView.element.querySelector('.event__rollup-btn') !== null) {
       pointFormView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
         replaceFormToPoint();
       });
@@ -88,6 +89,7 @@ export default class PointsPresenter {
     for (const point of this.#points) {
       this.#renderPoint(point);
     }
+    render (new NewEventButtonView(), document.querySelector('.trip-main'));
     render (new SortView(), this.#container);
     render (this.#pointsListView, this.#container);
   }
