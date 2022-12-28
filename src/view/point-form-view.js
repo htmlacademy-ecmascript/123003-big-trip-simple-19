@@ -4,14 +4,22 @@ import { POINT_TYPES } from '../const.js';
 
 const DEFAULT_POINT_TYPE = POINT_TYPES[0];
 const BLANK_POINT = {
-  'type': DEFAULT_POINT_TYPE,
-  'date_from': null,
-  'date_to': null,
-  'destination': 0,
-  'basePrice': 0,
-  'offers': []
+  type: DEFAULT_POINT_TYPE,
+  dateFrom: null,
+  dateTo: null,
+  destination: 0,
+  basePrice: 0,
+  offers: [],
 };
-
+const BLANK_DESTINATION = {
+  name: '',
+  description: '',
+  pictures: [],
+};
+const BLANK_OFFER = {
+  type: '',
+  offers: [],
+};
 const ResetButtonText = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',
@@ -42,9 +50,13 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 
   const isNew = pointId === '';
 
-  const { name: destinationName, description, pictures } = destinations.find(({ id }) => id === pointDestinationId);
+  const {
+    name: destinationName = '',
+    description = '',
+    pictures = []
+  } = destinations.find(({ id }) => id === pointDestinationId) ?? BLANK_DESTINATION;
 
-  const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType);
+  const { offers: offerOptions = [] } = offers.find(({ type }) => type === pointType) ?? BLANK_OFFER;
 
   const rollupButtonTemplate = isNew
     ? ''
@@ -65,9 +77,9 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 
     return (
       `<div class="event__type-item">
-      <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${ checked }>
-      <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ capitalize(type) }</label>
-    </div>`
+        <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${ checked }>
+        <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ capitalize(type) }</label>
+      </div>`
     );
   }).join('');
 
@@ -98,17 +110,17 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         </div>
       </section>`;
 
-  const destinationTemplate = pointDestinationId === undefined
-    ? ''
-    : `<section class="event__section  event__section--destination">
+  const destinationTemplate = pointDestinationId > 0
+    ? `<section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${ description }</p>
+        <p class="event__destination-description">${ description ?? '' }</p>
         <div class="event__photos-container">
           <div class="event__photos-tape">
             ${ destinationPicturesTemplate }
           </div>
         </div>
-      </section>`;
+      </section>`
+    : '';
 
   return (
     `<li class="trip-events__item">
@@ -133,7 +145,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ pointType }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName }" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName ?? '' }" list="destination-list-1">
             <datalist id="destination-list-1">
               ${ destinationNamesTemplate }
             </datalist>
@@ -171,6 +183,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
 }
 
 export default class PointFormView {
+  #element = null;
   #point = null;
   #offers = [];
   #destinations = [];
@@ -181,7 +194,7 @@ export default class PointFormView {
     this.#offers = offers;
   }
 
-  getTemplate() {
+  get template() {
     return createTemplate({
       point: this.#point,
       destinations: this.#destinations,
@@ -189,12 +202,12 @@ export default class PointFormView {
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {

@@ -21,12 +21,19 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     dateTo,
     destination: pointDestinationId,
   } = point;
-  const { name: destinationName } = destinations.find(({ id }) => id === pointDestinationId);
+
+  const { name = '' } = destinations.find(({ id }) => id === pointDestinationId);
   const pointDate = formatDateShort(dateFrom);
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
   const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
-  const offerOptionsTemplate = offerOptions === undefined ? NO_SELECTED_OFFERS_TEXT : offerOptions.map(createofferOptionsTemplate).join('');
+  const offerOptionsTemplate = offerOptions.length === 0
+    ? NO_SELECTED_OFFERS_TEXT
+    : offerOptions.map(createofferOptionsTemplate).join('');
+  const rollupButtonTemplate =
+   `<button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>`;
 
   return (
     `<li class="trip-events__item">
@@ -35,7 +42,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${ pointType }.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${ pointType } ${ destinationName } </h3>
+        <h3 class="event__title">${ pointType } ${ name } </h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="${ dateFrom.toISOString() }">${ timeFrom }</time>
@@ -50,15 +57,14 @@ function createTemplate({ point, destinations = [], offers = [] }) {
         <ul class="event__selected-offers">
           ${ offerOptionsTemplate }
         </ul>
-        <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
+         ${ rollupButtonTemplate }
       </div>
     </li>`
   );
 }
 
 export default class PointView {
+  #element = null;
   #point = null;
   #offers = [];
   #destinations = [];
@@ -69,7 +75,7 @@ export default class PointView {
     this.#offers = offers;
   }
 
-  getTemplate() {
+  get template() {
     return createTemplate({
       point: this.#point,
       destinations: this.#destinations,
@@ -77,15 +83,15 @@ export default class PointView {
     });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
