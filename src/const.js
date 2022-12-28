@@ -7,7 +7,7 @@ const POINT_TYPES = [
   'flight',
   'check-in',
   'sightseeing',
-  'restaurant'
+  'restaurant',
 ];
 
 const TripMessageText = {
