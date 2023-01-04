@@ -1,11 +1,11 @@
+import { render } from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
 import PointView from '../view/point-view.js';
 import PointFormView from '../view/point-form-view.js';
 import TripMessageView from '../view/trip-message-view.js';
-import NewEventButtonView from '../view/new-event-button-view.js';
 import { TripMessageText } from '../const.js';
-import { render } from '../render.js';
+
 
 export default class PointsPresenter {
   #pointsListView = new PointsListView();
@@ -37,46 +37,38 @@ export default class PointsPresenter {
       point,
       destinations: this.#destinations,
       offers: this.#offers,
+      onRollupButtonClick: () => {
+        replacePointToForm.call(this);
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     });
     const pointFormView = new PointFormView({
       point,
       destinations: this.#destinations,
       offers: this.#offers,
+      onFormSubmit: () => {
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onRollupButtonClick: () => {
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
     });
 
     function replacePointToForm() {
-      this.#pointsListView.element.replaceChild(pointView.element, pointFormView.element);
-    }
-    function replaceFormToPoint() {
       this.#pointsListView.element.replaceChild(pointFormView.element, pointView.element);
     }
-
-    const escKeyDownHandler = (evt) => {
+    function replaceFormToPoint() {
+      this.#pointsListView.element.replaceChild(pointView.element, pointFormView.element);
+    }
+    function escKeyDownHandler(evt) {
       if (evt.key.startsWith('Esc')) {
         evt.preventDefault();
-        replaceFormToPoint();
+        replaceFormToPoint.call(this);
         document.removeEventListener('keydown', escKeyDownHandler);
       }
-    };
-
-    if (pointView.element.querySelector('.event__rollup-btn') !== null) {
-      pointView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      });
     }
-
-    if (pointFormView.element.querySelector('.event__rollup-btn') !== null) {
-      pointFormView.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-        replaceFormToPoint();
-      });
-    }
-
-    pointFormView.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      replaceFormToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
 
     render(pointFormView, this.#pointsListView.element);
   }
@@ -89,7 +81,7 @@ export default class PointsPresenter {
     for (const point of this.#points) {
       this.#renderPoint(point);
     }
-    render (new NewEventButtonView(), document.querySelector('.trip-main'));
+
     render (new SortView(), this.#container);
     render (this.#pointsListView, this.#container);
   }

@@ -1,5 +1,5 @@
-import { createElement } from '../render.js';
-import { formatDateShort, formatTime } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { formatDateShort, formatTime } from '../utils/points.js';
 
 const NO_SELECTED_OFFERS_TEXT = 'No additional offers';
 
@@ -63,17 +63,26 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   );
 }
 
-export default class PointView {
-  #element = null;
+export default class PointView extends AbstractView {
   #point = null;
   #offers = [];
   #destinations = [];
+  #handleRollupButtonClick = null;
 
-  constructor({ point, destinations, offers }) {
+  constructor({ point, destinations, offers, onRollupButtonClick }) {
+    super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
+    this.#handleRollupButtonClick = onRollupButtonClick;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupButtonClickHandler);
   }
+
+  #rollupButtonClickHandler = () => {
+    if (this.element.querySelector('.event__rollup-btn') !== null) {
+      this.#handleRollupButtonClick();
+    }
+  };
 
   get template() {
     return createTemplate({
@@ -81,17 +90,5 @@ export default class PointView {
       destinations: this.#destinations,
       offers: this.#offers
     });
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

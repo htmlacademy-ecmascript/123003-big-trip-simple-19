@@ -5,10 +5,6 @@ const DateFormat = {
   TIME: 'HH:mm',
 };
 
-function getRandomArrayItem(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
 function formatDateShort(date) {
   return date ? dayjs(date).format(DateFormat.DATE) : '';
 }
@@ -21,4 +17,4 @@ function capitalize(text) {
   return text.charAt(0).toUpperCase().concat(text.slice(1));
 }
 
-export { getRandomArrayItem, formatDateShort, formatTime, capitalize };
+export { formatDateShort, formatTime, capitalize };
