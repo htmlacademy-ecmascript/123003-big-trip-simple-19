@@ -4,7 +4,7 @@ function createSortItemTemplate({ id, checked = false, disabled = false }) {
   return (
     `<div class="trip-sort__item  trip-sort__item--${ id }">
     <input id="sort-${ id }" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${ id }" ${ checked ? 'checked' : '' } ${ disabled ? 'disabled' : '' }>
-    <label class="trip-sort__btn" for="sort-${ id }">${ id }</label>
+    <label class="trip-sort__btn" for="sort-${ id }">${ id === 'offer' ? 'offers' : id }</label>
   </div>`
   );
 }
