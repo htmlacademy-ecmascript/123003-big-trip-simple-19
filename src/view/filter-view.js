@@ -1,39 +1,26 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
+
+function createFilterTemplate({ id, checked = false, disabled = false }) {
+  return (
+    `<div class="trip-filters__filter">
+      <input id="filter-${ id }" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${ id }" ${ checked ? 'checked' : '' } ${ disabled ? 'disabled' : '' }>
+      <label class="trip-filters__filter-label" for="filter-${ id }">${ id }</label>
+    </div>`
+  );
+}
 
 function createTemplate() {
   return (
     `<form class="trip-filters" action="#" method="get">
-      <div class="trip-filters__filter">
-        <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
-        <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-      </div>
-
-      <div class="trip-filters__filter">
-        <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-        <label class="trip-filters__filter-label" for="filter-future">Future</label>
-      </div>
-
+      ${createFilterTemplate({ id: 'everything', checked: true })}
+      ${createFilterTemplate({ id: 'future' })}
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
   );
 }
 
-export default class FilterView {
-  #element = null;
-
+export default class FilterView extends AbstractView {
   get template() {
     return createTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

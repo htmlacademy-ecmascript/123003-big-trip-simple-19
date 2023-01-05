@@ -1,5 +1,5 @@
-import { createElement } from '../render.js';
-import { capitalize } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import { capitalize } from '../utils/common.js';
 import { POINT_TYPES } from '../const.js';
 
 const DEFAULT_POINT_TYPE = POINT_TYPES[0];
@@ -39,6 +39,7 @@ function createDestinationPictureTemplate({ src, description }) {
   );
 }
 
+
 function createTemplate({ point, destinations = [], offers = [] }) {
   const {
     id: pointId = '',
@@ -46,7 +47,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     destination: pointDestinationId,
     offers: chosenOffers,
     basePrice,
-  } = point;
+  } = point ?? BLANK_POINT;
 
   const isNew = pointId === '';
 
@@ -182,16 +183,23 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   );
 }
 
-export default class PointFormView {
-  #element = null;
+export default class PointFormView extends AbstractView {
   #point = null;
   #offers = [];
   #destinations = [];
+  #handleFormSubmit = null;
+  #handleRollupButtonClick = null;
 
-  constructor({ point = BLANK_POINT, destinations, offers }) {
+  constructor({ point, destinations, offers, onFormSubmit, onRollupButtonClick }) {
+    super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleRollupButtonClick = onRollupButtonClick;
+
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
   }
 
   get template() {
@@ -202,16 +210,14 @@ export default class PointFormView {
     });
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #rollupButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollupButtonClick();
+  };
 }
 
