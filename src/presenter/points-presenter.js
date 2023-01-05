@@ -48,14 +48,17 @@ export default class PointsPresenter {
       offers: this.#offers,
       onFormSubmit: () => {
         replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
+        removeEscListener();
       },
       onRollupButtonClick: () => {
         replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
+        removeEscListener();
       },
     });
 
+    function removeEscListener() {
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
     function replacePointToForm() {
       this.#pointsListView.element.replaceChild(pointFormView.element, pointView.element);
     }
@@ -66,11 +69,11 @@ export default class PointsPresenter {
       if (evt.key.startsWith('Esc')) {
         evt.preventDefault();
         replaceFormToPoint.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
+        removeEscListener();
       }
     }
 
-    render(pointFormView, this.#pointsListView.element);
+    render(pointView, this.#pointsListView.element);
   }
 
   #renderPoints() {

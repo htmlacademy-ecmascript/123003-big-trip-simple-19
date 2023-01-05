@@ -1,5 +1,3 @@
-import { getRandomArrayItem } from '../utils/common.js';
-
 const points = [
   {
     'id': '0',
@@ -1318,6 +1316,10 @@ const offers = [
     ]
   }
 ];
+
+function getRandomArrayItem(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
 
 const getRandomPoint = () => {
   const point = getRandomArrayItem(points);

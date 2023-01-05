@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalize } from '../utils/points.js';
+import { capitalize } from '../utils/common.js';
 import { POINT_TYPES } from '../const.js';
 
 const DEFAULT_POINT_TYPE = POINT_TYPES[0];
@@ -39,6 +39,7 @@ function createDestinationPictureTemplate({ src, description }) {
   );
 }
 
+
 function createTemplate({ point, destinations = [], offers = [] }) {
   const {
     id: pointId = '',
@@ -46,7 +47,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     destination: pointDestinationId,
     offers: chosenOffers,
     basePrice,
-  } = point;
+  } = point ?? BLANK_POINT;
 
   const isNew = pointId === '';
 
@@ -188,16 +189,29 @@ export default class PointFormView extends AbstractView {
   #destinations = [];
   #handleFormSubmit = null;
   #handleRollupButtonClick = null;
+  #rollupButton = null;
 
-  constructor({ point = BLANK_POINT, destinations, offers, onFormSubmit, onRollupButtonClick }) {
+  constructor({ point, destinations, offers, onFormSubmit, onRollupButtonClick }) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollupButtonClick = onRollupButtonClick;
+    this.#rollupButton = this.element.querySelector('.event__rollup-btn');
+
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupButtonClickHandler);
+    if (this.#rollupButton !== null) {
+      this.#rollupButton.addEventListener('click', this.#rollupButtonClickHandler);
+    }
+  }
+
+  get template() {
+    return createTemplate({
+      point: this.#point,
+      destinations: this.#destinations,
+      offers: this.#offers
+    });
   }
 
   #formSubmitHandler = (evt) => {
@@ -207,17 +221,7 @@ export default class PointFormView extends AbstractView {
 
   #rollupButtonClickHandler = (evt) => {
     evt.preventDefault();
-    if (this.element.querySelector('.event__rollup-btn') !== null) {
-      this.#handleRollupButtonClick();
-    }
+    this.#handleRollupButtonClick();
   };
-
-  get template() {
-    return createTemplate({
-      point: this.#point,
-      destinations: this.#destinations,
-      offers: this.#offers
-    });
-  }
 }
 
