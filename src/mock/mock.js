@@ -29,8 +29,8 @@ const points = [
   {
     'id': '2',
     'type': 'flight',
-    'date_from': '2022-12-12T09:31:52.785Z',
-    'date_to': '2022-12-13T06:16:55.905Z',
+    'date_from': '2023-01-18T09:31:52.785Z',
+    'date_to': '2023-01-19T06:16:55.905Z',
     'destination': 11,
     'basePrice': 800,
     'offers': [
@@ -43,8 +43,8 @@ const points = [
   {
     'id': '3',
     'type': 'train',
-    'date_from': '2022-12-13T06:16:55.905Z',
-    'date_to': '2022-12-14T06:05:39.271Z',
+    'date_from': '2023-01-13T06:16:55.905Z',
+    'date_to': '2023-01-14T06:05:39.271Z',
     'destination': 1,
     'basePrice': 900,
     'offers': [
@@ -56,8 +56,8 @@ const points = [
   {
     'id': '4',
     'type': 'ship',
-    'date_from': '2022-12-14T06:05:39.271Z',
-    'date_to': '2022-12-14T09:28:27.959Z',
+    'date_from': '2023-01-11T06:05:39.271Z',
+    'date_to': '2023-01-14T09:28:27.959Z',
     'destination': 19,
     'basePrice': 400,
     'offers': [
@@ -67,8 +67,8 @@ const points = [
   {
     'id': '5',
     'type': 'flight',
-    'date_from': '2022-12-14T09:28:27.959Z',
-    'date_to': '2022-12-15T01:57:33.422Z',
+    'date_from': '2023-01-04T09:28:27.959Z',
+    'date_to': '2023-01-25T01:57:33.422Z',
     'destination': 17,
     'basePrice': 300,
     'offers': [
@@ -79,8 +79,8 @@ const points = [
   {
     'id': '6',
     'type': 'drive',
-    'date_from': '2022-12-15T01:57:33.422Z',
-    'date_to': '2022-12-15T04:17:16.434Z',
+    'date_from': '2023-01-15T01:57:33.422Z',
+    'date_to': '2023-01-15T04:17:16.434Z',
     'destination': 18,
     'basePrice': 900,
     'offers': [
