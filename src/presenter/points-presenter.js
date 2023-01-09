@@ -1,11 +1,9 @@
 import { render } from '../framework/render.js';
-import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
 import PointView from '../view/point-view.js';
 import PointFormView from '../view/point-form-view.js';
 import TripMessageView from '../view/trip-message-view.js';
 import { TripMessageText } from '../const.js';
-
 
 export default class PointsPresenter {
   #pointsListView = new PointsListView();
@@ -85,7 +83,6 @@ export default class PointsPresenter {
       this.#renderPoint(point);
     }
 
-    render (new SortView(), this.#container);
     render (this.#pointsListView, this.#container);
   }
 }
