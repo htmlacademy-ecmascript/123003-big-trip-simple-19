@@ -27,4 +27,8 @@ function sortByPrice(points) {
   return points.sort(( a, b ) => (b.basePrice > a.basePrice) ? 1 : -1);
 }
 
-export { formatDateShort, formatTime, isFuturePoint, sortByTime, sortByPrice };
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export { formatDateShort, formatTime, isFuturePoint, sortByTime, sortByPrice, updateItem };
