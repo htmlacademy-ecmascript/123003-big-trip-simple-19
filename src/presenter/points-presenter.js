@@ -1,9 +1,16 @@
 import { render } from '../framework/render.js';
+import FilterPresenter from '../presenter/filter-presenter.js';
+import SortPresenter from '../presenter/sort-presenter.js';
+import PointPresenter from '../presenter/point-presenter.js';
 import PointsListView from '../view/points-list-view.js';
-import PointView from '../view/point-view.js';
-import PointFormView from '../view/point-form-view.js';
 import TripMessageView from '../view/trip-message-view.js';
 import { TripMessageText } from '../const.js';
+import { generateFilterItems } from '../mock/filter.js';
+import { generateSortItems } from '../mock/sort.js';
+import { updateItem } from '../utils/points.js';
+
+const pointsContainer = document.querySelector('.trip-events');
+const filterContainer = document.querySelector('.trip-controls__filters');
 
 export default class PointsPresenter {
   #pointsListView = new PointsListView();
@@ -14,6 +21,7 @@ export default class PointsPresenter {
   #points = [];
   #destinations = [];
   #offers = [];
+  #pointPresenters = new Map();
 
   constructor ({ container, pointsModel, destinationsModel, offersModel }) {
     this.#container = container;
@@ -27,62 +35,71 @@ export default class PointsPresenter {
     this.#destinations = [...this.#destinationsModel.destinations];
     this.#offers = [...this.#offersModel.offers];
 
-    this.#renderPoints();
+    if (this.#points.length > 0){
+      this.#renderPoints();
+    } else {
+      this.#renderNoPoints();
+    }
   }
 
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
   #renderPoint(point) {
-    const pointView = new PointView({
-      point,
+    const pointPresenter = new PointPresenter({
+      pointListContainer: this.#pointsListView.element,
       destinations: this.#destinations,
       offers: this.#offers,
-      onRollupButtonClick: () => {
-        replacePointToForm.call(this);
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
-    });
-    const pointFormView = new PointFormView({
-      point,
-      destinations: this.#destinations,
-      offers: this.#offers,
-      onFormSubmit: () => {
-        replaceFormToPoint.call(this);
-        removeEscListener();
-      },
-      onRollupButtonClick: () => {
-        replaceFormToPoint.call(this);
-        removeEscListener();
-      },
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
     });
 
-    function removeEscListener() {
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
-    function replacePointToForm() {
-      this.#pointsListView.element.replaceChild(pointFormView.element, pointView.element);
-    }
-    function replaceFormToPoint() {
-      this.#pointsListView.element.replaceChild(pointView.element, pointFormView.element);
-    }
-    function escKeyDownHandler(evt) {
-      if (evt.key.startsWith('Esc')) {
-        evt.preventDefault();
-        replaceFormToPoint.call(this);
-        removeEscListener();
-      }
-    }
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
 
-    render(pointView, this.#pointsListView.element);
+  #renderSort() {
+    const generatedSortItems = generateSortItems(this.#points);
+    const sortPresenter = new SortPresenter({
+      container: pointsContainer,
+      sortItems: generatedSortItems,
+    });
+
+    sortPresenter.init();
+  }
+
+  #renderFilter() {
+    const generatedFilterItems = generateFilterItems(this.#points);
+    const filterPresenter = new FilterPresenter({
+      container: filterContainer,
+      filterItems: generatedFilterItems,
+    });
+
+    filterPresenter.init();
+  }
+
+  #clearPoints() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
   }
 
   #renderPoints() {
-    if (this.#points.length === 0) {
-      return render (new TripMessageView(TripMessageText.NO_POINTS), this.#container);
-    }
-
     for (const point of this.#points) {
       this.#renderPoint(point);
     }
 
     render (this.#pointsListView, this.#container);
+    this.#renderSort();
+    this.#renderFilter();
+  }
+
+  #renderNoPoints() {
+    render (new TripMessageView(TripMessageText.NO_POINTS), this.#container);
   }
 }

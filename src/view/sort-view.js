@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false ) {
+function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false) {
   const { name } = sortItem;
   return (
     `<div class="trip-sort__item  trip-sort__item--${ name }">
@@ -11,7 +11,13 @@ function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false 
 }
 
 function createTemplate(sortItems) {
-  const sortItemsTemplate = sortItems.map((sortItem, index) => createSortItemTemplate(sortItem, index === 0)).join('');
+
+  const sortItemsTemplate = sortItems.map(
+    (sortItem, index) => {
+      const isDisabled = index === 1 || index === 2 || index === 4;
+      return createSortItemTemplate(sortItem, index === 0, isDisabled);
+    }
+  ).join('');
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
         ${ sortItemsTemplate }

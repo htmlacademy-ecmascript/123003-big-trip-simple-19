@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 
 export default class SortPresenter {
@@ -11,6 +11,6 @@ export default class SortPresenter {
   }
 
   init() {
-    render (new SortView(this.#sortItems), this.#container);
+    render (new SortView(this.#sortItems), this.#container, RenderPosition.AFTERBEGIN);
   }
 }
