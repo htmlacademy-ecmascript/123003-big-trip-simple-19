@@ -1,9 +1,18 @@
 import { FilterType } from '../const.js';
 import { isFuturePoint } from './points.js';
 
-const filter = {
+const filterPointsToDate = {
   [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => isFuturePoint(point)),
+  [FilterType.FUTURE]: (points) => points.slice().filter((point) => isFuturePoint(point)),
 };
 
-export { filter };
+function generateFilterItems(points) {
+  return Object.entries(filterPointsToDate).map(
+    ([filterName, filterPoints]) => ({
+      name: filterName,
+      count: filterPoints(points).length,
+    }),
+  );
+}
+
+export { generateFilterItems };

@@ -5,8 +5,6 @@ import PointPresenter from '../presenter/point-presenter.js';
 import PointsListView from '../view/points-list-view.js';
 import TripMessageView from '../view/trip-message-view.js';
 import { TripMessageText } from '../const.js';
-import { generateFilterItems } from '../mock/filter.js';
-import { generateSortItems } from '../mock/sort.js';
 import { updateItem } from '../utils/points.js';
 
 const pointsContainer = document.querySelector('.trip-events');
@@ -65,20 +63,18 @@ export default class PointsPresenter {
   }
 
   #renderSort() {
-    const generatedSortItems = generateSortItems(this.#points);
     const sortPresenter = new SortPresenter({
       container: pointsContainer,
-      sortItems: generatedSortItems,
+      points: this.#points,
     });
 
     sortPresenter.init();
   }
 
   #renderFilter() {
-    const generatedFilterItems = generateFilterItems(this.#points);
     const filterPresenter = new FilterPresenter({
       container: filterContainer,
-      filterItems: generatedFilterItems,
+      points: this.#points,
     });
 
     filterPresenter.init();

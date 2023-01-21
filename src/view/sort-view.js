@@ -1,7 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false) {
+function createSortItemTemplate(sortItem, isChecked = false, isDisabled = true) {
   const { name } = sortItem;
+  if (name === 'day' || name === 'price') {
+    isDisabled = false;
+  }
   return (
     `<div class="trip-sort__item  trip-sort__item--${ name }">
     <input id="sort-${ name }" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${ name }" ${ isChecked ? 'checked' : '' } ${ isDisabled ? 'disabled' : '' }>
@@ -13,10 +16,7 @@ function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false)
 function createTemplate(sortItems) {
 
   const sortItemsTemplate = sortItems.map(
-    (sortItem, index) => {
-      const isDisabled = index === 1 || index === 2 || index === 4;
-      return createSortItemTemplate(sortItem, index === 0, isDisabled);
-    }
+    (sortItem, index) => createSortItemTemplate(sortItem, index === 0)
   ).join('');
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">

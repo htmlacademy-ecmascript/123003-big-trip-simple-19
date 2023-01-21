@@ -1,16 +1,17 @@
 import { render } from '../framework/render.js';
 import FilterView from '../view/filter-view.js';
+import { generateFilterItems } from '../utils/filter.js';
 
 export default class FilterPresenter {
   #container = null;
-  #filterItems = null;
+  #points = null;
 
-  constructor ({ container, filterItems }) {
+  constructor ({ container, points }) {
     this.#container = container;
-    this.#filterItems = filterItems;
+    this.#points = generateFilterItems(points);
   }
 
   init() {
-    render (new FilterView(this.#filterItems), this.#container);
+    render (new FilterView(this.#points), this.#container);
   }
 }

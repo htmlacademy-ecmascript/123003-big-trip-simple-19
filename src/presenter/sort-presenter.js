@@ -1,16 +1,17 @@
 import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort-view.js';
+import { generateSortItems } from '../utils/sort.js';
 
 export default class SortPresenter {
   #container = null;
-  #sortItems = null;
+  #points = null;
 
-  constructor ({ container, sortItems }) {
+  constructor ({ container, points }) {
     this.#container = container;
-    this.#sortItems = sortItems;
+    this.#points = generateSortItems(points);
   }
 
   init() {
-    render (new SortView(this.#sortItems), this.#container, RenderPosition.AFTERBEGIN);
+    render (new SortView(this.#points), this.#container, RenderPosition.AFTERBEGIN);
   }
 }
