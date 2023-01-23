@@ -69,6 +69,10 @@ export default class PointsPresenter {
     });
 
     sortPresenter.init();
+    // - Очищаем список
+    // - Рендерим список заново
+    //this.#clearPoints();
+    //this.#renderPoints();
   }
 
   #renderFilter() {

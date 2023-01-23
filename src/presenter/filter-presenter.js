@@ -8,10 +8,10 @@ export default class FilterPresenter {
 
   constructor ({ container, points }) {
     this.#container = container;
-    this.#points = generateFilterItems(points);
+    this.#points = points;
   }
 
   init() {
-    render (new FilterView(this.#points), this.#container);
+    render (new FilterView(generateFilterItems(this.#points)), this.#container);
   }
 }
