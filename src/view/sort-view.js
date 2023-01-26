@@ -1,54 +1,48 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { SortType } from '../const.js';
-import { capitalize } from '../utils/common.js';
 
-function createSortItemTemplate(sortItem, isChecked = false, isDisabled = true) {
-  const { name } = sortItem;
-  if (name === 'day' || name === 'price') {
-    isDisabled = false;
-  }
+function createSortItemTemplate({ id, name, isChecked = false, isDisabled = true }) {
   return (
-    `<div class="trip-sort__item  trip-sort__item--${ name }">
-    <input id="sort-${ name }" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${ name }" ${ isChecked ? 'checked' : '' } ${ isDisabled ? 'disabled' : '' } data-sort-type="${ SortType[capitalize(name)] }">
-    <label class="trip-sort__btn" for="sort-${ name }">${ name === 'offer' ? 'offers' : name } </label>
+    `<div class="trip-sort__item  trip-sort__item--${ id }">
+    <input 
+      id="sort-${ id }" 
+      class="trip-sort__input  visually-hidden" 
+      type="radio" 
+      name="trip-sort" 
+      value="sort-${ id }" 
+      ${ isChecked ? 'checked' : '' } 
+      ${ isDisabled ? 'disabled' : '' }
+    >
+    <label class="trip-sort__btn" for="sort-${ id }">${ name }</label>
   </div>`
   );
 }
 
 function createTemplate(sortItems) {
-
-  const sortItemsTemplate = sortItems.map(
-    (sortItem, index) => createSortItemTemplate(sortItem, index === 0)
-  ).join('');
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-        ${ sortItemsTemplate }
+        ${ sortItems.map(createSortItemTemplate).join('') }
     </form>`
   );
 }
 
 export default class SortView extends AbstractView {
-  #points = null;
   #handleSortTypeChange = null;
+  #sortItems = null;
 
-  constructor({ points, onSortTypeChange }) {
+  constructor({ sortItems, onSortTypeChange }) {
     super();
-    this.#points = points;
+
+    this.#sortItems = sortItems;
     this.#handleSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createTemplate(this.#points);
+    return createTemplate(this.#sortItems);
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'INPUT') {
-      return;
-    }
-
-    evt.preventDefault();
-    this.#handleSortTypeChange(evt.target.dataset.sortType);
+    this.#handleSortTypeChange(evt.target.value);
   };
 }
