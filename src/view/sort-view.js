@@ -1,39 +1,48 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-function createSortItemTemplate(sortItem, isChecked = false, isDisabled = false) {
-  const { name } = sortItem;
+function createSortItemTemplate({ id, name, isChecked = false, isDisabled = true }) {
   return (
-    `<div class="trip-sort__item  trip-sort__item--${ name }">
-    <input id="sort-${ name }" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${ name }" ${ isChecked ? 'checked' : '' } ${ isDisabled ? 'disabled' : '' }>
-    <label class="trip-sort__btn" for="sort-${ name }">${ name === 'offer' ? 'offers' : name } </label>
+    `<div class="trip-sort__item  trip-sort__item--${ id }">
+    <input 
+      id="sort-${ id }" 
+      class="trip-sort__input  visually-hidden" 
+      type="radio" 
+      name="trip-sort" 
+      value="${ id }" 
+      ${ isChecked ? 'checked' : '' } 
+      ${ isDisabled ? 'disabled' : '' }
+    >
+    <label class="trip-sort__btn" for="sort-${ id }">${ name }</label>
   </div>`
   );
 }
 
 function createTemplate(sortItems) {
-
-  const sortItemsTemplate = sortItems.map(
-    (sortItem, index) => {
-      const isDisabled = index === 1 || index === 2 || index === 4;
-      return createSortItemTemplate(sortItem, index === 0, isDisabled);
-    }
-  ).join('');
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-        ${ sortItemsTemplate }
+        ${ sortItems.map(createSortItemTemplate).join('') }
     </form>`
   );
 }
 
 export default class SortView extends AbstractView {
+  #handleSortTypeChange = null;
   #sortItems = null;
 
-  constructor(sortItems) {
+  constructor({ sortItems, onSortTypeChange }) {
     super();
+
     this.#sortItems = sortItems;
+    this.#handleSortTypeChange = onSortTypeChange;
+
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
     return createTemplate(this.#sortItems);
   }
+
+  #sortTypeChangeHandler = (evt) => {
+    this.#handleSortTypeChange(evt.target.value);
+  };
 }

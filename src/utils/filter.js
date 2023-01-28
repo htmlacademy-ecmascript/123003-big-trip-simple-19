@@ -1,9 +1,20 @@
 import { FilterType } from '../const.js';
-import { isFuturePoint } from './points.js';
 
-const filter = {
-  [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => isFuturePoint(point)),
+const filterTypeToFilter = {
+  [FilterType.EVERYTHING]: (points) => points.slice(),
+  [FilterType.FUTURE]: filterPointsByFuture,
 };
 
-export { filter };
+function filterPointsByFuture(points, dateNow = Date.now()) {
+  return points.filter(({ dateFrom }) => dateFrom.getTime() > dateNow);
+}
+
+function filterPoints(points, filterType = FilterType.EVERYTHING) {
+  return filterTypeToFilter[filterType]?.(points) ?? points.slice();
+}
+
+function hasFuturePoints(points, dateNow = Date.now()) {
+  return points.some(({ dateFrom }) => dateFrom.getTime() > dateNow);
+}
+
+export { hasFuturePoints, filterPoints };
