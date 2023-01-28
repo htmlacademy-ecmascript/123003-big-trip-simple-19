@@ -1,10 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-function createFilterTemplate({ id, type, isChecked = false, isDisabled = false }) {
+function createFilterTemplate({ type, isChecked = false, isDisabled = false }) {
   return (
     `<div class="trip-filters__filter">
       <input 
-        id="filter-${ id }" 
+        id="filter-${ type }" 
         class="trip-filters__filter-input  visually-hidden"
         type="radio" 
         name="trip-filter" 
@@ -12,7 +12,7 @@ function createFilterTemplate({ id, type, isChecked = false, isDisabled = false 
         ${ isChecked ? 'checked' : '' } 
         ${ isDisabled ? 'disabled' : '' }
       >
-      <label class="trip-filters__filter-label" for="filter-${ id }">${ type }</label>
+      <label class="trip-filters__filter-label" for="filter-${ type }">${ type }</label>
     </div>`
   );
 }

@@ -8,7 +8,7 @@ function createSortItemTemplate({ id, name, isChecked = false, isDisabled = true
       class="trip-sort__input  visually-hidden" 
       type="radio" 
       name="trip-sort" 
-      value="sort-${ id }" 
+      value="${ id }" 
       ${ isChecked ? 'checked' : '' } 
       ${ isDisabled ? 'disabled' : '' }
     >

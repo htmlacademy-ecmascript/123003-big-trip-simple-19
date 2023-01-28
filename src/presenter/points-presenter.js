@@ -8,7 +8,7 @@ import { updateItem } from '../utils/points.js';
 import { sortByTime, sortByPrice } from '../utils/points.js';
 import { SortType } from '../const.js';
 
-const sortItems = [
+const SORT_ITEMS = [
   {
     id: SortType.DAY,
     name: SortType.DAY,
@@ -30,7 +30,7 @@ const sortItems = [
   },
   {
     id: SortType.OFFER,
-    name: 'offers',
+    name: `${SortType.OFFER}s`,
   },
 ];
 
@@ -45,6 +45,7 @@ export default class PointsPresenter {
   #offers = [];
   #pointPresenters = new Map();
   #sortView = null;
+  #currentSortType = SortType.DAY;
 
   constructor ({ container, pointsModel, destinationsModel, offersModel }) {
     this.#container = container;
@@ -81,6 +82,7 @@ export default class PointsPresenter {
     this.#sortPoints(sortType);
     this.#clearPoints();
     this.#renderPoints();
+    this.#currentSortType = sortType;
   };
 
   #sortPoints(sortType) {
@@ -98,7 +100,7 @@ export default class PointsPresenter {
 
   #renderSort() {
     this.#sortView = new SortView({
-      sortItems,
+      sortItems: SORT_ITEMS,
       onSortTypeChange: this.#handleSortTypeChange
     });
 

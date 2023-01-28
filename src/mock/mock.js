@@ -1317,21 +1317,14 @@ const offers = [
   }
 ];
 
-function getRandomArrayItem(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
-const getRandomPoint = () => {
-  const point = getRandomArrayItem(points);
-  return {
-    dateFrom: new Date(point.date_from),
-    dateTo: new Date(point.date_to),
-    ...point,
-  };
-};
+const getPoints = () => points.map((point) => ({
+  ...point,
+  dateFrom: new Date(point.date_from),
+  dateTo: new Date(point.date_to),
+}));
 
 const getDestinations = () => destinations;
 
 const getOffers = () => offers;
 
-export { getRandomPoint, getDestinations, getOffers };
+export { getPoints, getDestinations, getOffers };

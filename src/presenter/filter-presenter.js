@@ -1,7 +1,7 @@
 import { render } from '../framework/render.js';
 import FilterView from '../view/filter-view.js';
 import { FilterType } from '../const.js';
-import { hasFuturePoints, filterPointsByFuture } from '../utils/filter.js';
+import { hasFuturePoints, filterPoints } from '../utils/filter.js';
 
 export default class FilterPresenter {
   #container = null;
@@ -22,13 +22,11 @@ export default class FilterPresenter {
 
     return [
       {
-        id: 'everything',
         type: FilterType.EVERYTHING,
         isChecked: true,
         isDisabled: points.length === 0,
       },
       {
-        id: 'future',
         type: FilterType.FUTURE,
         isChecked: false,
         isDisabled: hasFuturePoints(points),
@@ -36,22 +34,9 @@ export default class FilterPresenter {
     ];
   }
 
-  #handleFilterTypeChange = (filterType) => {
-    this.#filterPoints(filterType);
+  #handleFilterTypeChange = () => {
+    filterPoints(this.#pointsModel.points);
   };
-
-  #filterPoints(filterType) {
-    switch (filterType) {
-      case FilterType.FUTURE:
-        filterPointsByFuture(this.#pointsModel.points);
-        break;
-      case FilterType.EVERYTHING:
-        this.#pointsModel.points.slice();
-        break;
-      default:
-        this.#pointsModel.points.slice();
-    }
-  }
 
   #renderFilter() {
     this.#filterView = new FilterView({
