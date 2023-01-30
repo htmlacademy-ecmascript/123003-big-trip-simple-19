@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalize } from '../utils/common.js';
 import { POINT_TYPES } from '../const.js';
 
@@ -183,8 +183,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   );
 }
 
-export default class PointFormView extends AbstractView {
-  #point = null;
+export default class PointFormView extends AbstractStatefulView {
   #offers = [];
   #destinations = [];
   #handleFormSubmit = null;
@@ -192,32 +191,73 @@ export default class PointFormView extends AbstractView {
 
   constructor({ point, destinations, offers, onFormSubmit, onRollupButtonClick }) {
     super();
-    this.#point = point;
+    this._setState(PointFormView.parsePointToState(point));
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollupButtonClick = onRollupButtonClick;
 
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
+    this._restoreHandlers();
   }
 
   get template() {
     return createTemplate({
-      point: this.#point,
+      point: this._state,
       destinations: this.#destinations,
       offers: this.#offers
     });
   }
 
+  reset(point) {
+    this.updateElement(
+      PointFormView.parsePointToState(point)
+    );
+  }
+
+  _restoreHandlers = () => {
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
+    this.element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+  };
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(this._state);
   };
 
   #rollupButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleRollupButtonClick();
   };
+
+  #pointTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+      offers: [],
+    });
+  };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    let selectedDestination = this.#destinations.find((destination) => evt.target.value === destination.name);
+    if (!selectedDestination) {
+      selectedDestination = '';
+    }
+
+    this.updateElement({
+      destination: selectedDestination.id
+    });
+  };
+
+  static parsePointToState(point) {
+    return {...point };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+    return point;
+  }
 }
 
