@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalize } from '../utils/common.js';
 import { POINT_TYPES } from '../const.js';
 
@@ -12,6 +12,7 @@ const BLANK_POINT = {
   offers: [],
 };
 const BLANK_DESTINATION = {
+  id: 0,
   name: '',
   description: '',
   pictures: [],
@@ -40,14 +41,14 @@ function createDestinationPictureTemplate({ src, description }) {
 }
 
 
-function createTemplate({ point, destinations = [], offers = [] }) {
+function createTemplate({ state, destinations = [], offers = [] }) {
   const {
     id: pointId = '',
     type: pointType,
     destination: pointDestinationId,
     offers: chosenOffers,
     basePrice,
-  } = point ?? BLANK_POINT;
+  } = state;
 
   const isNew = pointId === '';
 
@@ -146,7 +147,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ pointType }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName ?? '' }" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ destinationName ?? '' }" list="destination-list-1" required> 
             <datalist id="destination-list-1">
               ${ destinationNamesTemplate }
             </datalist>
@@ -183,41 +184,81 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   );
 }
 
-export default class PointFormView extends AbstractView {
-  #point = null;
+export default class PointFormView extends AbstractStatefulView {
   #offers = [];
   #destinations = [];
   #handleFormSubmit = null;
   #handleRollupButtonClick = null;
 
-  constructor({ point, destinations, offers, onFormSubmit, onRollupButtonClick }) {
+  constructor({ point = BLANK_POINT, destinations, offers, onFormSubmit, onRollupButtonClick }) {
     super();
-    this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollupButtonClick = onRollupButtonClick;
-
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
+    this._setState(PointFormView.parsePointToState(point));
+    this._restoreHandlers();
   }
 
   get template() {
     return createTemplate({
-      point: this.#point,
+      state: this._state,
       destinations: this.#destinations,
-      offers: this.#offers
+      offers: this.#offers,
     });
   }
 
+  reset(point) {
+    this.updateElement(
+      PointFormView.parsePointToState(point)
+    );
+  }
+
+  _restoreHandlers = () => {
+    const element = this.element;
+
+    element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
+    element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
+    element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+  };
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(this._state);
   };
 
   #rollupButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleRollupButtonClick();
   };
+
+  #pointTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+      offers: [],
+    });
+  };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    const destinationName = evt.target.value;
+    const selectedDestination = this.#destinations.find(({ name }) => destinationName === name) ?? BLANK_DESTINATION;
+
+    this.updateElement({
+      destination: selectedDestination.id,
+      offers: [],
+    });
+  };
+
+  static parsePointToState(point) {
+    return { ...point };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+    return point;
+  }
 }
 
