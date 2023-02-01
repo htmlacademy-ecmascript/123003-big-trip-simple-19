@@ -94,8 +94,8 @@ export default class PointPresenter {
   };
 
   #handleRollUpClick = () => {
-    this.#replaceFormToPoint();
     this.#pointFormView.reset(this.#point);
+    this.#replaceFormToPoint();
   };
 
   #handleFormSubmit = (point) => {

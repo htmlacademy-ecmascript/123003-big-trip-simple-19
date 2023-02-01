@@ -1,9 +1,5 @@
 import dayjs from 'dayjs';
-
-const DateFormat = {
-  DATE: 'D MMM',
-  TIME: 'HH:mm',
-};
+import { DateFormat } from '../const.js';
 
 function formatDateShort(date) {
   return date ? dayjs(date).format(DateFormat.DATE) : '';
