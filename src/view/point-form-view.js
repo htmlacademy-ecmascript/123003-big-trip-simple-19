@@ -2,6 +2,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalize } from '../utils/common.js';
 import { POINT_TYPES } from '../const.js';
 import flatpickr from 'flatpickr';
+import { DateFormat } from '../const.js';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -195,7 +196,6 @@ export default class PointFormView extends AbstractStatefulView {
   #datePickerFrom = null;
   #datePickerTo = null;
 
-
   constructor({ point = BLANK_POINT, destinations, offers, onFormSubmit, onRollupButtonClick }) {
     super();
     this.#destinations = destinations;
@@ -249,6 +249,34 @@ export default class PointFormView extends AbstractStatefulView {
     this.#setDatePickerTo();
   };
 
+  #setDatePickerFrom() {
+    this.#datePickerFrom = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        dateFormat: DateFormat.DATE_FULL,
+        defaultDate: this._state.dateFrom,
+        maxDate: this._state.dateTo,
+        enableTime: true,
+        onChange: this.#dateFromChangeHandler,
+        'time_24hr': true,
+      },
+    );
+  }
+
+  #setDatePickerTo() {
+    this.#datePickerTo = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        dateFormat: DateFormat.DATE_FULL,
+        defaultDate: this._state.dateTo,
+        minDate: this._state.dateFrom,
+        enableTime: true,
+        onChange: this.#dateToChangeHandler,
+        'time_24hr': true,
+      },
+    );
+  }
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(PointFormView.parseStateToPoint(this._state));
@@ -267,18 +295,18 @@ export default class PointFormView extends AbstractStatefulView {
     });
   };
 
-
   #offersChangeHandler = (evt) => {
     evt.preventDefault();
     evt.target.toggleAttribute('checked');
 
     let selectedOffers = this._state.offers;
-    const offerId = evt.target.dataset.offerId;
+    const offerId = +evt.target.dataset.offerId;
 
     if (evt.target.hasAttribute('checked')) {
-      selectedOffers.push(+offerId);
+      selectedOffers = selectedOffers.slice();
+      selectedOffers.push(offerId);
     } else {
-      selectedOffers = selectedOffers.filter((id) => id !== +(offerId));
+      selectedOffers = selectedOffers.filter((id) => id !== offerId);
     }
 
     this._setState({
@@ -296,45 +324,15 @@ export default class PointFormView extends AbstractStatefulView {
     });
   };
 
-  #dateFromChangeHandler = ([userDate]) => {
-    this.updateElement({
-      dateFrom: userDate,
-    });
+  #dateFromChangeHandler = ([dateFrom]) => {
+    this.#datePickerTo.set('minDate', dateFrom);
+    this._setState({ dateFrom });
   };
 
-  #dateToChangeHandler = ([userDate]) => {
-    this.updateElement({
-      dateTo: userDate,
-    });
+  #dateToChangeHandler = ([dateTo]) => {
+    this.#datePickerFrom.set('maxDate', dateTo);
+    this._setState({ dateTo });
   };
-
-  #setDatePickerFrom() {
-    this.#datePickerFrom = flatpickr(
-      this.element.querySelector('#event-start-time-1'),
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.dateFrom,
-        maxDate: this._state.dateTo,
-        enableTime: true,
-        onChange: this.#dateFromChangeHandler,
-        'time_24hr': true,
-      },
-    );
-  }
-
-  #setDatePickerTo() {
-    this.#datePickerTo = flatpickr(
-      this.element.querySelector('#event-end-time-1'),
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.dateTo,
-        minDate: this._state.dateFrom,
-        enableTime: true,
-        onChange: this.#dateToChangeHandler,
-        'time_24hr': true,
-      },
-    );
-  }
 
   static parsePointToState(point) {
     return {

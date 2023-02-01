@@ -10,6 +10,12 @@ const POINT_TYPES = [
   'restaurant',
 ];
 
+const DateFormat = {
+  DATE: 'D MMM',
+  TIME: 'HH:mm',
+  DATE_FULL: 'd/m/y H:i',
+};
+
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
@@ -33,4 +39,4 @@ const FilterMessageText = {
   FUTURE: 'There are no future events now',
 };
 
-export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType };
+export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType, DateFormat };
