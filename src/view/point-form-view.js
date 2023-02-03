@@ -253,7 +253,7 @@ export default class PointFormView extends AbstractStatefulView {
     this.#datePickerFrom = flatpickr(
       this.element.querySelector('#event-start-time-1'),
       {
-        dateFormat: DateFormat.DATE_FULL,
+        dateFormat: DateFormat.FULL,
         defaultDate: this._state.dateFrom,
         maxDate: this._state.dateTo,
         enableTime: true,
@@ -267,7 +267,7 @@ export default class PointFormView extends AbstractStatefulView {
     this.#datePickerTo = flatpickr(
       this.element.querySelector('#event-end-time-1'),
       {
-        dateFormat: DateFormat.DATE_FULL,
+        dateFormat: DateFormat.FULL,
         defaultDate: this._state.dateTo,
         minDate: this._state.dateFrom,
         enableTime: true,

@@ -1,6 +1,7 @@
 import { render, replace, remove } from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import PointFormView from '../view/point-form-view.js';
+import { UserAction, UpdateType } from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -99,8 +100,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
+    this.#handleDataChange(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     this.#replaceFormToPoint();
-    this.#handleDataChange(point);
   };
 
   #escKeyDownHandler = (evt) => {

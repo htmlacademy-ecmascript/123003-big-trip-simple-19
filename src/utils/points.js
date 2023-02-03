@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { DateFormat } from '../const.js';
 
 function formatDateShort(date) {
-  return date ? dayjs(date).format(DateFormat.DATE) : '';
+  return date ? dayjs(date).format(DateFormat.SHORT) : '';
 }
 
 function formatTime(date) {

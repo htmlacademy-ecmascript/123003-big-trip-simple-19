@@ -11,9 +11,9 @@ const POINT_TYPES = [
 ];
 
 const DateFormat = {
-  DATE: 'D MMM',
+  SHORT: 'D MMM',
+  FULL: 'd/m/y H:i',
   TIME: 'HH:mm',
-  DATE_FULL: 'd/m/y H:i',
 };
 
 const FilterType = {
@@ -39,4 +39,16 @@ const FilterMessageText = {
   FUTURE: 'There are no future events now',
 };
 
-export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType, DateFormat };
+const UserAction = {
+  UPDATE_TASK: 'UPDATE_TASK',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType, DateFormat, UserAction, UpdateType };
