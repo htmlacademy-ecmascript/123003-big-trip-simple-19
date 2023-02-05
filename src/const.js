@@ -32,17 +32,14 @@ const SortType = {
 const TripMessageText = {
   NO_POINTS: 'Click New Event to create your first point',
   LOADING: 'Loading...',
-};
-
-const FilterMessageText = {
-  PAST: 'There are no past events now',
   FUTURE: 'There are no future events now',
+  EVERYTHING: 'There are no events now',
 };
 
 const UserAction = {
-  UPDATE_TASK: 'UPDATE_TASK',
-  ADD_TASK: 'ADD_TASK',
-  DELETE_TASK: 'DELETE_TASK',
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
 };
 
 const UpdateType = {
@@ -51,4 +48,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType, DateFormat, UserAction, UpdateType };
+export { POINT_TYPES, TripMessageText, FilterType, SortType, DateFormat, UserAction, UpdateType };

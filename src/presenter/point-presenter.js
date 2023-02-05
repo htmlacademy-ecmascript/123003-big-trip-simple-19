@@ -2,6 +2,7 @@ import { render, replace, remove } from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import PointFormView from '../view/point-form-view.js';
 import { UserAction, UpdateType } from '../const.js';
+import { isDatesEqual } from '../utils/points.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -46,6 +47,7 @@ export default class PointPresenter {
       offers: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
       onRollupButtonClick: this.#handleRollUpClick,
+      onDeleteClick: this.#handleDeleteClick,
     });
 
     if (prevPointView === null || prevPointFormView === null) {
@@ -100,12 +102,22 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
+    const isMinorUpdate = !isDatesEqual(this.#point.dateTo, point.dateTo) || !isDatesEqual(this.#point.dateFrom, point.dateFrom);
+
     this.#handleDataChange(
-      UserAction.UPDATE_TASK,
-      UpdateType.MINOR,
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       point,
     );
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
   #escKeyDownHandler = (evt) => {

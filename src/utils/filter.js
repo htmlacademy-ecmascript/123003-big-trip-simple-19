@@ -9,7 +9,7 @@ function filterPointsByFuture(points, dateNow = Date.now()) {
   return points.filter(({ dateFrom }) => dateFrom.getTime() > dateNow);
 }
 
-function filterPoints(points, filterType = FilterType.EVERYTHING) {
+function filterPoints(points, filterType) {
   return filterTypeToFilter[filterType]?.(points) ?? points.slice();
 }
 

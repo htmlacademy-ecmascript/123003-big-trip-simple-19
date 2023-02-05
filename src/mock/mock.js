@@ -2,8 +2,8 @@ const points = [
   {
     'id': '0',
     'type': 'flight',
-    'date_from': '2022-12-11T10:25:58.321Z',
-    'date_to': '2022-12-12T04:20:09.723Z',
+    'date_from': '2023-02-11T10:25:58.321Z',
+    'date_to': '2023-02-12T04:20:09.723Z',
     'destination': 27,
     'basePrice': 800,
     'offers': [
@@ -16,8 +16,8 @@ const points = [
   {
     'id': '1',
     'type': 'taxi',
-    'date_from': '2022-12-12T04:20:09.723Z',
-    'date_to': '2022-12-12T09:31:52.785Z',
+    'date_from': '2023-02-12T04:20:09.723Z',
+    'date_to': '2023-02-12T09:31:52.785Z',
     'destination': 18,
     'basePrice': 700,
     'offers': [
