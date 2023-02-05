@@ -6,7 +6,7 @@ const filterTypeToFilter = {
 };
 
 function filterPointsByFuture(points, dateNow = Date.now()) {
-  return points.filter(({ dateFrom }) => dateFrom.getTime() > dateNow);
+  return points.filter(({ dateFrom, dateTo }) => dateFrom.getTime() >= dateNow || (dateFrom.getTime() < dateNow && dateTo.getTime() > dateNow));
 }
 
 function filterPoints(points, filterType) {
@@ -14,7 +14,7 @@ function filterPoints(points, filterType) {
 }
 
 function hasFuturePoints(points, dateNow = Date.now()) {
-  return points.some(({ dateFrom }) => dateFrom.getTime() > dateNow);
+  return points.some(({ dateFrom, dateTo }) => dateFrom.getTime() >= dateNow || (dateFrom.getTime() < dateNow && dateTo.getTime() > dateNow));
 }
 
 export { hasFuturePoints, filterPoints };

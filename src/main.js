@@ -35,12 +35,12 @@ const newPointButtonView = new NewPointButtonView({
 });
 
 function handleNewPointFormClose() {
-  newPointButtonView.element.disabled = false;
+  newPointButtonView.setEnabled();
 }
 
 function handleNewPointButtonClick() {
   pointsPresenter.createPoint();
-  newPointButtonView.element.disabled = true;
+  newPointButtonView.setDisabled();
 }
 
 render (newPointButtonView, document.querySelector('.trip-main'));

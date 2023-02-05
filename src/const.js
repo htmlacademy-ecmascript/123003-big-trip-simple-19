@@ -17,8 +17,8 @@ const DateFormat = {
 };
 
 const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
+  EVERYTHING: 'EVERYTHING',
+  FUTURE: 'FUTURE',
 };
 
 const SortType = {

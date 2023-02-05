@@ -9,7 +9,6 @@ export default class FilterPresenter {
   #filterModel = null;
   #filterView = null;
 
-
   constructor ({ container, pointsModel, filterModel }) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -21,16 +20,17 @@ export default class FilterPresenter {
 
   get filters() {
     const points = this.#pointsModel.points;
+    const filterType = this.#filterModel.filter;
 
     return [
       {
         type: FilterType.EVERYTHING,
-        isChecked: true,
+        isChecked: FilterType.EVERYTHING === filterType,
         isDisabled: points.length === 0,
       },
       {
         type: FilterType.FUTURE,
-        isChecked: false,
+        isChecked: FilterType.FUTURE === filterType,
         isDisabled: !hasFuturePoints(points),
       },
     ];

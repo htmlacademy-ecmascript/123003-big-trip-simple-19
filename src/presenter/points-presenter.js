@@ -90,58 +90,17 @@ export default class PointsPresenter {
   }
 
   init() {
-    this.#renderBoard();
+    this.#render();
   }
 
   createPoint() {
     this.#currentSortType = SortType.DEFAULT;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#filterModel.setFilter(UpdateType.MAJOR, this.#filterType);
     this.#newPointPresenter.init({
       destinations: this.destinations,
       offers: this.offers,
     });
   }
-
-  #handleModeChange = () => {
-    this.#newPointPresenter.destroy();
-    this.#pointPresenters.forEach((presenter) => presenter.resetView());
-  };
-
-  #handleViewAction = (actionType, updateType, update) => {
-    switch (actionType) {
-      case UserAction.UPDATE_POINT:
-        this.#pointsModel.updatePoint(updateType, update);
-        break;
-      case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
-        break;
-      case UserAction.DELETE_POINT:
-        this.#pointsModel.deletePoint(updateType, update);
-        break;
-    }
-  };
-
-  #handleModelEvent = (updateType, point) => {
-    switch (updateType) {
-      case UpdateType.PATCH:
-        this.#pointPresenters.get(point.id).init(point);
-        break;
-      case UpdateType.MINOR:
-        this.#clearBoard();
-        this.#renderBoard();
-        break;
-      case UpdateType.MAJOR:
-        this.#clearBoard({ resetSortType: true });
-        this.#renderBoard();
-        break;
-    }
-  };
-
-  #handleSortTypeChange = (sortType) => {
-    this.#currentSortType = sortType;
-    this.#clearBoard();
-    this.#renderBoard();
-  };
 
   #renderSort() {
     this.#sortView = new SortView({
@@ -174,7 +133,7 @@ export default class PointsPresenter {
     }
   }
 
-  #renderBoard() {
+  #render() {
     if (this.points.length > 0) {
       this.#renderSort();
       this.#renderPoints();
@@ -190,7 +149,7 @@ export default class PointsPresenter {
     render (this.#tripMessageView, this.#container);
   }
 
-  #clearBoard( { resetSortType = false } = {} ) {
+  #clear( { resetSortType = false } = {} ) {
     this.#newPointPresenter.destroy();
 
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -205,4 +164,45 @@ export default class PointsPresenter {
       this.#currentSortType = SortType.DAY;
     }
   }
+
+  #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
+  };
+
+  #handleModelEvent = (updateType, point) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters.get(point.id).init(point);
+        break;
+      case UpdateType.MINOR:
+        this.#clear();
+        this.#render();
+        break;
+      case UpdateType.MAJOR:
+        this.#clear({ resetSortType: true });
+        this.#render();
+        break;
+    }
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    this.#currentSortType = sortType;
+    this.#clear();
+    this.#render();
+  };
 }

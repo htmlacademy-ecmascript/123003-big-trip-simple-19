@@ -171,7 +171,7 @@ function createTemplate({ state, destinations, offers }) {
             <span class="visually-hidden">Price</span>
             €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${ basePrice }">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${ basePrice }">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -195,16 +195,18 @@ export default class PointFormView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleRollupButtonClick = null;
   #handleDeleteClick = null;
+  #handleCancelClick = null;
   #datePickerFrom = null;
   #datePickerTo = null;
 
-  constructor({ point = BLANK_POINT, destinations, offers, onFormSubmit, onRollupButtonClick, onDeleteClick }) {
+  constructor({ point = BLANK_POINT, destinations, offers, onFormSubmit, onRollupButtonClick, onDeleteClick, onCancelClick }) {
     super();
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollupButtonClick = onRollupButtonClick;
     this.#handleDeleteClick = onDeleteClick;
+    this.#handleCancelClick = onCancelClick;
     this._setState(PointFormView.parsePointToState(point));
     this._restoreHandlers();
   }
@@ -248,6 +250,8 @@ export default class PointFormView extends AbstractStatefulView {
     element.querySelector('#event-start-time-1').addEventListener('change', this.#dateFromChangeHandler);
     element.querySelector('#event-end-time-1').addEventListener('change', this.#dateToChangeHandler);
     element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+    element.querySelector('.event__reset-btn').addEventListener('click', this.#formCancelClickHandler);
+    element.querySelector('.event__input--price').addEventListener('input', this.#priceInputHandler);
 
     this.#setDatePickerFrom();
     this.#setDatePickerTo();
@@ -339,7 +343,19 @@ export default class PointFormView extends AbstractStatefulView {
   };
 
   #formDeleteClickHandler = () => {
-    this.#handleDeleteClick(PointFormView.parseStateToPoint(this._state));
+    this.#handleDeleteClick?.(PointFormView.parseStateToPoint(this._state));
+  };
+
+  #formCancelClickHandler = () => {
+    this.#handleCancelClick();
+  };
+
+  #priceInputHandler = (evt) => {
+    evt.preventDefault();
+
+    this._setState({
+      basePrice: evt.target.value,
+    });
   };
 
   static parsePointToState(point) {
