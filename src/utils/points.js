@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { DateFormat } from '../const.js';
 
 function formatDateShort(date) {
-  return date ? dayjs(date).format(DateFormat.DATE) : '';
+  return date ? dayjs(date).format(DateFormat.SHORT) : '';
 }
 
 function formatTime(date) {
@@ -21,4 +21,8 @@ function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
-export { formatDateShort, formatTime, sortByTime, sortByPrice, updateItem };
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+export { formatDateShort, formatTime, sortByTime, sortByPrice, updateItem, isDatesEqual };

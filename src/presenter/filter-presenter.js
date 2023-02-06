@@ -1,49 +1,64 @@
-import { render } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 import FilterView from '../view/filter-view.js';
-import { FilterType } from '../const.js';
-import { hasFuturePoints, filterPoints } from '../utils/filter.js';
+import { FilterType, UpdateType } from '../const.js';
+import { hasFuturePoints } from '../utils/filter.js';
 
 export default class FilterPresenter {
   #container = null;
   #pointsModel = null;
+  #filterModel = null;
   #filterView = null;
 
-  constructor ({ container, pointsModel }) {
+  constructor ({ container, pointsModel, filterModel }) {
     this.#container = container;
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
-  init() {
-    this.#renderFilter();
-  }
-
-  #getFilters() {
+  get filters() {
     const points = this.#pointsModel.points;
+    const filterType = this.#filterModel.filter;
 
     return [
       {
         type: FilterType.EVERYTHING,
-        isChecked: true,
+        isChecked: FilterType.EVERYTHING === filterType,
         isDisabled: points.length === 0,
       },
       {
         type: FilterType.FUTURE,
-        isChecked: false,
-        isDisabled: hasFuturePoints(points),
+        isChecked: FilterType.FUTURE === filterType,
+        isDisabled: !hasFuturePoints(points),
       },
     ];
   }
 
-  #handleFilterTypeChange = () => {
-    filterPoints(this.#pointsModel.points);
-  };
+  init() {
+    const filters = this.filters;
+    const prevFilterView = this.#filterView;
 
-  #renderFilter() {
     this.#filterView = new FilterView({
-      filterItems: this.#getFilters(),
-      onFilterTypeChange: this.#handleFilterTypeChange
+      filters,
+      onFilterTypeChange: this.#handleFilterTypeChange,
     });
 
-    render(this.#filterView, this.#container);
+    if (prevFilterView === null) {
+      render(this.#filterView, this.#container);
+      return;
+    }
+
+    replace(this.#filterView, prevFilterView);
+    remove(prevFilterView);
   }
+
+  #handleModelEvent = () => {
+    this.init();
+  };
+
+  #handleFilterTypeChange = (filterType) => {
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
+  };
 }

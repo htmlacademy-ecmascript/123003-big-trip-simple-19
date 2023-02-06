@@ -11,9 +11,9 @@ const POINT_TYPES = [
 ];
 
 const DateFormat = {
-  DATE: 'D MMM',
+  SHORT: 'D MMM',
+  FULL: 'd/m/y H:i',
   TIME: 'HH:mm',
-  DATE_FULL: 'd/m/y H:i',
 };
 
 const FilterType = {
@@ -32,11 +32,19 @@ const SortType = {
 const TripMessageText = {
   NO_POINTS: 'Click New Event to create your first point',
   LOADING: 'Loading...',
+  [FilterType.FUTURE]: 'There are no future events now',
 };
 
-const FilterMessageText = {
-  PAST: 'There are no past events now',
-  FUTURE: 'There are no future events now',
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
 };
 
-export { POINT_TYPES, TripMessageText, FilterMessageText, FilterType, SortType, DateFormat };
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { POINT_TYPES, TripMessageText, FilterType, SortType, DateFormat, UserAction, UpdateType };
