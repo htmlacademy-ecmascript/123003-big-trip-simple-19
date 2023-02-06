@@ -38,7 +38,7 @@ function createTemplate({ point, destinations = [], offers = [] }) {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${ dateFrom }">${ pointDate }</time>
+        <time class="event__date" datetime="${ dateFrom.toISOString() }">${ pointDate }</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${ pointType }.png" alt="Event type icon">
         </div>

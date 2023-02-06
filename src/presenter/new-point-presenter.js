@@ -22,7 +22,7 @@ export default class NewPointPresenter {
 
     this.#newPointView = new PointFormView({
       onFormSubmit: this.#handleFormSubmit,
-      onCancelClick: this.#handleCancelClick,
+      onResetClick: this.#handleResetClick,
       destinations,
       offers,
     });
@@ -53,7 +53,7 @@ export default class NewPointPresenter {
     this.destroy();
   };
 
-  #handleCancelClick = () => {
+  #handleResetClick = () => {
     this.destroy();
   };
 

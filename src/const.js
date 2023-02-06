@@ -17,8 +17,8 @@ const DateFormat = {
 };
 
 const FilterType = {
-  EVERYTHING: 'EVERYTHING',
-  FUTURE: 'FUTURE',
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
 };
 
 const SortType = {
@@ -32,8 +32,7 @@ const SortType = {
 const TripMessageText = {
   NO_POINTS: 'Click New Event to create your first point',
   LOADING: 'Loading...',
-  FUTURE: 'There are no future events now',
-  EVERYTHING: 'There are no events now',
+  [FilterType.FUTURE]: 'There are no future events now',
 };
 
 const UserAction = {

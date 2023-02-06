@@ -47,8 +47,7 @@ export default class PointPresenter {
       offers: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
       onRollupButtonClick: this.#handleRollUpClick,
-      onDeleteClick: this.#handleDeleteClick,
-      onCancelClick: this.#handleCancelClick,
+      onResetClick: this.#handleResetClick,
     });
 
     if (prevPointView === null || prevPointFormView === null) {
@@ -113,16 +112,12 @@ export default class PointPresenter {
     this.#replaceFormToPoint();
   };
 
-  #handleDeleteClick = (point) => {
+  #handleResetClick = (point) => {
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );
-  };
-
-  #handleCancelClick = () => {
-    this.#replaceFormToPoint();
   };
 
   #escKeyDownHandler = (evt) => {

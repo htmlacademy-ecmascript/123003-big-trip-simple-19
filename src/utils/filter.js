@@ -5,16 +5,21 @@ const filterTypeToFilter = {
   [FilterType.FUTURE]: filterPointsByFuture,
 };
 
-function filterPointsByFuture(points, dateNow = Date.now()) {
-  return points.filter(({ dateFrom, dateTo }) => dateFrom.getTime() >= dateNow || (dateFrom.getTime() < dateNow && dateTo.getTime() > dateNow));
+function checkPointByFuture({ dateFrom, dateTo }, dateNow = Date.now()) {
+  return dateFrom.getTime() >= dateNow ||
+    (dateFrom.getTime() < dateNow && dateTo.getTime() > dateNow);
+}
+
+function filterPointsByFuture(points) {
+  return points.filter((point) => checkPointByFuture(point));
 }
 
 function filterPoints(points, filterType) {
   return filterTypeToFilter[filterType]?.(points) ?? points.slice();
 }
 
-function hasFuturePoints(points, dateNow = Date.now()) {
-  return points.some(({ dateFrom, dateTo }) => dateFrom.getTime() >= dateNow || (dateFrom.getTime() < dateNow && dateTo.getTime() > dateNow));
+function hasFuturePoints(points) {
+  return points.some((point) => checkPointByFuture(point));
 }
 
 export { hasFuturePoints, filterPoints };

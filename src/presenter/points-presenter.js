@@ -95,7 +95,7 @@ export default class PointsPresenter {
 
   createPoint() {
     this.#currentSortType = SortType.DEFAULT;
-    this.#filterModel.setFilter(UpdateType.MAJOR, this.#filterType);
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init({
       destinations: this.destinations,
       offers: this.offers,
