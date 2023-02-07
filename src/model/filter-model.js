@@ -1,7 +1,7 @@
 import Observable from '../framework/observable.js';
 
 export default class FilterModel extends Observable {
-  #filter = null;
+  #filter = '';
 
   get filter() {
     return this.#filter;
