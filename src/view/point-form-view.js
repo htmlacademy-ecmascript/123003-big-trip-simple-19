@@ -29,6 +29,7 @@ const BLANK_OFFER = {
 const ResetButtonText = {
   CANCEL: 'Cancel',
   DELETE: 'Delete',
+  DELETING: 'Deleting...',
 };
 
 function createRollupButtonTemplate() {
@@ -53,6 +54,9 @@ function createTemplate({ state, destinations, offers }) {
     destination: pointDestinationId,
     offers: chosenOffers,
     basePrice,
+    isDisabled,
+    isSaving,
+    isDeleting,
   } = state;
 
   const isNew = pointId === '';
@@ -69,9 +73,14 @@ function createTemplate({ state, destinations, offers }) {
     ? ''
     : createRollupButtonTemplate();
 
-  const resetButtonText = isNew
-    ? ResetButtonText.CANCEL
-    : ResetButtonText.DELETE;
+  const disabled = isDisabled
+    ? 'disabled'
+    : '';
+  const savingButtonText = isSaving
+    ? 'Saving'
+    : 'Save';
+  const deleteButtonText = isDeleting ? ResetButtonText.DELETING : ResetButtonText.DELETE;
+  const resetButtonText = isNew ? ResetButtonText.CANCEL : deleteButtonText;
 
   const destinationNamesTemplate = destinations.map(({ name }) => `<option value="${ name }"></option>`).join('');
 
@@ -98,7 +107,7 @@ function createTemplate({ state, destinations, offers }) {
 
     return (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ pointType }-${ id }" type="checkbox" name="event-offer-${ pointType }" ${ checked } data-offer-id="${ id }">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${ pointType }-${ id }" type="checkbox" name="event-offer-${ pointType }" ${ checked } data-offer-id="${ id }" ${ disabled }>
         <label class="event__offer-label" for="event-offer-${ pointType }-${ id }">
           <span class="event__offer-title">${ title }</span>
           +€&nbsp;
@@ -138,7 +147,7 @@ function createTemplate({ state, destinations, offers }) {
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${ pointType }.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${ disabled }>
 
             <div class="event__type-list">
               <fieldset class="event__type-group">
@@ -152,7 +161,7 @@ function createTemplate({ state, destinations, offers }) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${ pointType }
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ he.encode(destinationName) }" list="destination-list-1" required> 
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ he.encode(destinationName) }" list="destination-list-1" required ${ disabled }> 
             <datalist id="destination-list-1">
               ${ destinationNamesTemplate }
             </datalist>
@@ -163,7 +172,7 @@ function createTemplate({ state, destinations, offers }) {
             <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="19/03/19 00:00">
             —
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="19/03/19 00:00">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="19/03/19 00:00" ${ disabled }>
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -171,11 +180,11 @@ function createTemplate({ state, destinations, offers }) {
             <span class="visually-hidden">Price</span>
             €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${ basePrice }">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${ basePrice }" ${ disabled }>
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">
+          <button class="event__save-btn  btn  btn--blue" type="submit" ${ disabled }>${ savingButtonText }</button>
+          <button class="event__reset-btn" type="reset" ${ disabled }>
             ${ resetButtonText }
           </button>                  
           ${ rollupButtonTemplate }
@@ -244,7 +253,7 @@ export default class PointFormView extends AbstractStatefulView {
     element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
     element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
     element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
+    element.querySelector('.event__available-offers')?.addEventListener('change', this.#offersChangeHandler);
     element.querySelector('.event__reset-btn').addEventListener('click', this.#formResetClickHandler);
     element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
 
@@ -345,19 +354,28 @@ export default class PointFormView extends AbstractStatefulView {
     evt.preventDefault();
 
     this._setState({
-      basePrice: +evt.target.value,
+      basePrice: evt.target.valueAsNumber,
     });
   };
 
   static parsePointToState(point) {
     return {
-      ...point
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
     };
   }
 
   static parseStateToPoint(state) {
     const point = { ...state };
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
     return point;
   }
+
 }
 
