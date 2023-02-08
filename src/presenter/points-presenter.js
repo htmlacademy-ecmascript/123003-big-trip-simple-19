@@ -5,13 +5,13 @@ import NewPointPresenter from './new-point-presenter.js';
 import PointsListView from '../view/points-list-view.js';
 import TripMessageView from '../view/trip-message-view.js';
 import SortView from '../view/sort-view.js';
-import { sortByTime, sortByPrice } from '../utils/points.js';
+import { sortByDay, sortByTime, sortByPrice } from '../utils/points.js';
 import { TripMessageText, SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import { filterPoints } from '../utils/filter.js';
 
 const TimeLimit = {
-  LOWER_LIMIT: 350,
-  UPPER_LIMIT: 1000,
+  LOWER: 350,
+  UPPER: 1000,
 };
 const SORT_ITEMS = [
   {
@@ -27,6 +27,7 @@ const SORT_ITEMS = [
   {
     id: SortType.TIME,
     name:SortType.TIME,
+    isDisabled: false,
   },
   {
     id: SortType.PRICE,
@@ -42,8 +43,6 @@ const SORT_ITEMS = [
 export default class PointsPresenter {
   #container = null;
   #pointsModel = null;
-  #destinationsModel = null;
-  #offersModel = null;
   #filterModel = null;
 
   #sortView = null;
@@ -56,15 +55,13 @@ export default class PointsPresenter {
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
   #uiBlocker = new UiBlocker({
-    lowerLimit: TimeLimit.LOWER_LIMIT,
-    upperLimit: TimeLimit.UPPER_LIMIT
+    lowerLimit: TimeLimit.LOWER,
+    upperLimit: TimeLimit.UPPER
   });
 
-  constructor ({ container, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
+  constructor ({ container, pointsModel, filterModel, onNewPointDestroy }) {
     this.#container = container;
     this.#pointsModel = pointsModel;
-    this.#destinationsModel = destinationsModel;
-    this.#offersModel = offersModel;
     this.#filterModel = filterModel;
 
     this.#newPointPresenter = new NewPointPresenter({
@@ -84,9 +81,11 @@ export default class PointsPresenter {
 
     switch (this.#currentSortType) {
       case SortType.DAY:
-        return sortByTime(filteredPoints);
+        return sortByDay(filteredPoints);
       case SortType.PRICE:
         return sortByPrice(filteredPoints);
+      case SortType.TIME:
+        return sortByTime(filteredPoints);
     }
     return sortByTime(filteredPoints);
   }

@@ -26,6 +26,11 @@ const BLANK_OFFER = {
   type: '',
   offers: [],
 };
+const ResetButtonText = {
+  CANCEL: 'Cancel',
+  DELETE: 'Delete',
+  DELETING: 'Deleting...',
+};
 
 function createRollupButtonTemplate() {
   return (
@@ -68,18 +73,14 @@ function createTemplate({ state, destinations, offers }) {
     ? ''
     : createRollupButtonTemplate();
 
-  const deleteButtonText = isDeleting
-    ? 'Deleting...'
-    : 'Delete';
   const disabled = isDisabled
     ? 'disabled'
     : '';
   const savingButtonText = isSaving
     ? 'Saving'
     : 'Save';
-  const resetButtonText = !isNew
-    ? deleteButtonText
-    : 'Cancel';
+  const deleteButtonText = isDeleting ? ResetButtonText.DELETING : ResetButtonText.DELETE;
+  const resetButtonText = isNew ? ResetButtonText.CANCEL : deleteButtonText;
 
   const destinationNamesTemplate = destinations.map(({ name }) => `<option value="${ name }"></option>`).join('');
 
@@ -252,7 +253,7 @@ export default class PointFormView extends AbstractStatefulView {
     element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#rollupButtonClickHandler);
     element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
     element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
+    element.querySelector('.event__available-offers')?.addEventListener('change', this.#offersChangeHandler);
     element.querySelector('.event__reset-btn').addEventListener('click', this.#formResetClickHandler);
     element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
 

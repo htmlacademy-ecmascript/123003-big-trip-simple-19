@@ -71,7 +71,9 @@ export default class PointPresenter {
   destroy() {
     remove(this.#pointView);
     remove(this.#pointFormView);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    if (this.#mode === Mode.EDITING) {
+      document.removeEventListener('keydown', this.#escKeyDownHandler);
+    }
   }
 
   resetView() {
@@ -146,7 +148,6 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       point,
     );
-    this.#replaceFormToPoint();
   };
 
   #handleResetClick = (point) => {

@@ -25,7 +25,7 @@ export default class FilterPresenter {
     return [
       {
         type: FilterType.EVERYTHING,
-        isChecked: FilterType.EVERYTHING === filterType,
+        isChecked: true,
         isDisabled: points.length === 0,
       },
       {
