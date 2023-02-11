@@ -322,7 +322,7 @@ export default class PointFormView extends AbstractStatefulView {
     }
 
     this._setState({
-      offers: selectedOffers
+      offers: selectedOffers,
     });
   };
 
