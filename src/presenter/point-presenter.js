@@ -148,6 +148,8 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       point,
     );
+
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #handleResetClick = (point) => {

@@ -20,16 +20,20 @@ function createTemplate({ point, destinations = [], offers = [] }) {
     dateFrom,
     dateTo,
     destination: pointDestinationId,
+    offers: pointOffers,
   } = point;
 
   const { name = '' } = destinations.find(({ id }) => id === pointDestinationId);
   const pointDate = formatDateShort(dateFrom);
   const timeFrom = formatTime(dateFrom);
   const timeTo = formatTime(dateTo);
+
   const { offers: offerOptions } = offers.find(({ type }) => type === pointType);
-  const offerOptionsTemplate = offerOptions.length === 0
+  const chosenOffers = offerOptions.filter((offer) => pointOffers.includes(offer.id));
+
+  const offerOptionsTemplate = chosenOffers.length === 0
     ? NO_SELECTED_OFFERS_TEXT
-    : offerOptions.map(createofferOptionsTemplate).join('');
+    : chosenOffers.map(createofferOptionsTemplate).join('');
   const rollupButtonTemplate =
    `<button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
